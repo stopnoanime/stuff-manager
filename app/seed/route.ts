@@ -7,7 +7,7 @@ export async function GET() {
     await seedItems();
     await sql`COMMIT`;
 
-    return Response.json({ message: `Database seeded successfully. Now delete 'app/seed/route.ts' .` });
+    return Response.json({ message: `Database seeded successfully. You can delete 'app/seed/route.ts' now.` });
   } catch (error) {
     await sql`ROLLBACK`;
     return Response.json({ error }, { status: 500 });
