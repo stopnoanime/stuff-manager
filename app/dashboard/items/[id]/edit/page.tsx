@@ -2,27 +2,22 @@ import { Metadata } from 'next';
 import { fetchItem } from '@/app/_lib/data-fetches';
 import { notFound } from 'next/navigation';
 import ItemForm from '@/app/_ui/items/item-form';
-import Link from 'next/link';
-import { deleteItem } from '@/app/_lib/data-actions';
+import { editItem } from '@/app/_lib/data-actions';
 
 export const metadata: Metadata = {
-  title: 'Item Info',
+  title: 'Item Edit',
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
   const item = await fetchItem(params.id);
-  const deleteItemWithId = deleteItem.bind(null, params.id)
+  const editItemWithId = editItem.bind(null, params.id)
 
   if(!item)
     notFound();
 
   return (
     <div>
-      <Link href={params.id + '/edit'}>Edit Item</Link>
-      <form action={deleteItemWithId}>
-        <button>Delete item</button>
-      </form>
-      <ItemForm readonly defaultValue={item}></ItemForm>
+      <ItemForm defaultValue={item} action={editItemWithId}></ItemForm>
     </div>
   );
 }

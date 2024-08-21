@@ -10,3 +10,12 @@ export async function fetchItem(id: string) {
 
   return data.rows[0]
 }
+
+export async function fetchItems() {
+  const data = await sql<ItemsTable>`
+    SELECT *
+    FROM items;
+  `;
+
+  return data.rows;
+}
