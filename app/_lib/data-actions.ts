@@ -14,6 +14,14 @@ const itemFormSchema = z.object({
   location_description: z.string(),
 });
 
+function revalidateAndRedirectItems() {
+  revalidatePath('/dashboard/items');
+  revalidatePath('/dashboard/items/[id]', 'page')
+  revalidatePath('/dashboard/items/[id]/edit', 'page')
+
+  redirect('/dashboard/items');
+}
+
 export async function createItem(formData: FormData) {
   const d = itemFormSchema.parse(Object.fromEntries(formData.entries()))
   
@@ -25,8 +33,7 @@ export async function createItem(formData: FormData) {
     VALUES (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${d.image_url}, ${d.description}, ${d.location_description})
   `;
 
-  revalidatePath('/dashboard/items');
-  redirect('/dashboard/items');
+  revalidateAndRedirectItems();
 }
 
 export async function editItem(id: string, formData: FormData) {
@@ -42,13 +49,11 @@ export async function editItem(id: string, formData: FormData) {
     WHERE items.id = ${id};
   `;
 
-  revalidatePath('/dashboard/items');
-  redirect('/dashboard/items');
+  revalidateAndRedirectItems();
 }
 
 export async function deleteItem(id: string) {
   await sql`DELETE FROM items WHERE items.id = ${id}`;
 
-  revalidatePath('/dashboard/items');
-  redirect('/dashboard/items');
+  revalidateAndRedirectItems();
 }

@@ -6,7 +6,7 @@ export async function seedItems() {
         id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
         updated_at TIMESTAMPTZ NOT NULL,
 
-        parent_item_id UUID,
+        parent_item_id UUID REFERENCES items(id),
 
         name TEXT NOT NULL CHECK (name <> ''),
         category TEXT NOT NULL,
