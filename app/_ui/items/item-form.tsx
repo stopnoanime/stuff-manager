@@ -1,10 +1,22 @@
+'use client'
+
 import { ItemsTable } from "@/app/_lib/data-definitions";
+import { useActionState } from "react";
+
+export type ItemFormState = {
+    errors?: {
+      name?: string[];
+    };
+    message?: string | null;
+};
 
 export default function ItemForm(
-    {readonly, defaultValue, action} : {readonly?: boolean, defaultValue? : ItemsTable, action?: (d: FormData) => void}
+    {readonly, defaultValue, action} : {readonly?: boolean, defaultValue? : ItemsTable, action?: (prev: ItemFormState, d: FormData) => Promise<ItemFormState>}
 ) {
+    const [state, formAction] = action ? useActionState(action, {}) : [];
+
     return (
-    <form action={action} className="flex flex-col gap-4">
+    <form action={formAction} className="flex flex-col gap-4">
         <label>
             Parent item
             <input 
@@ -20,11 +32,18 @@ export default function ItemForm(
             <input 
                 type='text'
                 name='name'
-                required
                 defaultValue={defaultValue?.name}
                 readOnly={readonly}
+                aria-describedby="name-errors"
             ></input>
         </label>
+        <div id="name-errors">
+            {state?.errors?.name?.map(e => 
+                <p className="text-red-500" key={e}>
+                    {e}
+                </p>
+            )}
+        </div>
 
         <label>
             Category
@@ -66,6 +85,12 @@ export default function ItemForm(
             ></input>
         </label>
         
+        <div>
+          {state?.message && (
+            <p className="mt-2 text-sm text-red-500">{state.message}</p>
+          )}
+        </div>
+
         {!readonly && 
             <button>
                 {defaultValue ? 'Edit' : 'Create'}
