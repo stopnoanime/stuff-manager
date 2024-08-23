@@ -1,9 +1,9 @@
 "use client";
 
 import { ItemsTable } from "@/app/_lib/data-definitions";
-import { useActionState } from "react";
+import { useActionState, useId } from "react";
 import CreatableSelect from "react-select/creatable";
-import Select, { ClassNamesConfig, StylesConfig } from "react-select";
+import Select, { StylesConfig } from "react-select";
 import Image from "next/image";
 import noImage from "@/public/no-image.png";
 import { SelectOptions } from "@/app/_lib/data-fetches";
@@ -121,6 +121,7 @@ export default function ItemForm({
       <label>
         Category
         <CreatableSelect
+          instanceId={useId()}
           styles={selectStyles}
           name="category"
           placeholder="None"
@@ -133,6 +134,7 @@ export default function ItemForm({
       <label>
         Parent item
         <Select
+          instanceId={useId()}
           styles={selectStyles}
           name="parent_item_id"
           placeholder="None"
