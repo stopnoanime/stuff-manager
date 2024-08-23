@@ -27,5 +27,11 @@
     "prettier": "3.3.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "overrides": {
+    "react-select": {
+      "react": "^19.0.0-rc-1d989965-20240821",
+      "react-dom": "^19.0.0-rc-1d989965-20240821"
+    }
   }
 }
