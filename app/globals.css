@@ -21,3 +21,17 @@ body {
 .items-table td, .items-table th {
   @apply py-2 px-4 h-20
 }
+
+.item-form textarea {
+  @apply resize-none w-full h-full p-4 bg-stone-50
+}
+
+.item-form textarea,
+.default-border {
+  @apply border border-solid border-stone-900
+}
+
+.item-form textarea,
+.focus-outline {
+  @apply outline-slate-900 focus:outline outline-2
+}

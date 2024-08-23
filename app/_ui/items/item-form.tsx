@@ -2,6 +2,10 @@
 
 import { ItemsTable } from "@/app/_lib/data-definitions";
 import { useActionState } from "react";
+import CreatableSelect from 'react-select/creatable';
+import Select, { ClassNamesConfig, StylesConfig } from 'react-select'
+import Image from 'next/image'
+import noImage from '@/public/no-image.png'
 
 export type ItemFormState = {
     errors?: {
@@ -11,91 +15,121 @@ export type ItemFormState = {
 };
 
 export default function ItemForm(
-    {readonly, defaultValue, action} : {readonly?: boolean, defaultValue? : ItemsTable, action?: (prev: ItemFormState, d: FormData) => Promise<ItemFormState>}
+    {
+        defaultValue, 
+        action, 
+        categories, 
+        otherItems
+    } : {
+        defaultValue? : ItemsTable, 
+        action: (prev: ItemFormState, d: FormData) => Promise<ItemFormState>, 
+        categories: string[],
+        otherItems: {label: string, value: string}[]
+    }
 ) {
-    const [state, formAction] = action ? useActionState(action, {}) : [];
+    const [state, formAction] = useActionState(action, {});
+
+    const selectStyles: StylesConfig = {
+        control: (base, state) => ({
+            ...base,
+            transition: "none",
+            border: '1px solid #0f172a !important',
+            borderRadius: 0,
+            outline: '2px #0f172a ' + (state.isFocused ? 'solid' : ''),
+            boxShadow: 'none',
+            backgroundColor: '#fafaf9'
+        }),
+        menu: (base, state) => ({
+            ...base,
+            outline: '2px #0f172a solid',
+            border: '1px solid #0f172a !important',
+            borderRadius: 0,
+            boxShadow: 'none',
+            backgroundColor: '#fafaf9'
+        }),
+        option: (base, state) => ({
+            ...base,
+            backgroundColor: state.isSelected ? '#1c1917' : (state.isFocused ? '#d6d3d1': 'transparent')
+        }),
+        menuList: (base, state) => ({
+            ...base,
+            padding: 0,
+        }) 
+    }
+
+    const defaultCategory = defaultValue?.category ? {label: defaultValue.category, value: defaultValue.category} : null;
+    const defaultParent = defaultValue?.parent_item_id ? otherItems.filter(p => p.value === defaultValue.parent_item_id)[0] : null;
 
     return (
-    <form action={formAction} className="flex flex-col gap-4">
-        <label>
-            Parent item
-            <input 
-                type='text'
-                name='parent_item_id'
-                defaultValue={defaultValue?.parent_item_id || ''}
-                readOnly={readonly}
-            ></input>
-        </label>
+    <form action={formAction} className="grid grid-cols-2 gap-4 item-form">
+        <div className="w-full aspect-video relative">
+            <Image
+                className="object-contain "
+                src={defaultValue?.image_url|| noImage}
+                fill
+                sizes="10vw"
+                alt="Item image"
+            />
+        </div>
+        <input 
+            hidden
+            type='text'
+            name='image_url'
+            defaultValue={defaultValue?.image_url}
+        ></input>
+
+        <textarea
+            name='description' defaultValue={defaultValue?.description} placeholder="Item Description">
+        </textarea>
 
         <label>
             Name
             <input 
                 type='text'
                 name='name'
+                className="focus-outline block default-border px-[10px] py-[7px] w-full bg-stone-50"
                 defaultValue={defaultValue?.name}
-                readOnly={readonly}
                 aria-describedby="name-errors"
+                placeholder="Item Name"
             ></input>
+            <p id="name-errors">
+                {state?.errors?.name?.map(e => 
+                    <p className="text-red-500 text-sm" key={e}>
+                        {e}
+                    </p>
+                )}
+            </p>
         </label>
-        <div id="name-errors">
-            {state?.errors?.name?.map(e => 
-                <p className="text-red-500" key={e}>
-                    {e}
-                </p>
-            )}
-        </div>
+
+        <textarea 
+            name='location_description'
+            className="col-start-2 row-span-3"
+            defaultValue={defaultValue?.location_description}
+            placeholder="Item Location Description"
+        ></textarea>
 
         <label>
             Category
-            <input 
-                type='text'
-                name='category'
-                defaultValue={defaultValue?.category}
-                readOnly={readonly}
-            ></input>
+            <CreatableSelect 
+            styles={selectStyles} name="category" placeholder="None" isClearable 
+            defaultValue={defaultCategory} options={categories.map(c => ({label: c, name: c}))}
+            />
         </label>
 
         <label>
-            Image URL
-            <input 
-                type='text'
-                name='image_url'
-                defaultValue={defaultValue?.image_url}
-                readOnly={readonly}
-            ></input>
-        </label>
-
-        <label>
-            Description
-            <input 
-                type='text'
-                name='description'
-                defaultValue={defaultValue?.description}
-                readOnly={readonly}
-            ></input>
-        </label>
-
-        <label>
-            Location Description
-            <input 
-                type='text'
-                name='location_description'
-                defaultValue={defaultValue?.location_description}
-                readOnly={readonly}
-            ></input>
+            Parent item
+            <Select styles={selectStyles} name='parent_item_id' defaultValue={defaultParent} placeholder="None" isClearable options={otherItems}/>
         </label>
         
-        <div>
+        <div className="col-span-2">
           {state?.message && (
-            <p className="mt-2 text-sm text-red-500">{state.message}</p>
+            <p className="text-sm text-red-500">{state.message}</p>
           )}
         </div>
 
-        {!readonly && 
-            <button>
-                {defaultValue ? 'Edit' : 'Create'}
-            </button>
-        }
+        <button className="col-span-2 px-6 py-2 bg-stone-900 text-stone-50 focus-outline outline-offset-2">
+            {defaultValue ? 'Edit' : 'Create'}
+        </button>
     </form>
     )
 }

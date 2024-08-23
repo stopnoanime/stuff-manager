@@ -16,3 +16,21 @@ export async function seedItems() {
       );
     `;
 }
+
+export async function seedCategories() {
+  await sql`
+      CREATE TABLE predefined_categories (
+        category TEXT UNIQUE NOT NULL CHECK (category <> '')
+      );
+    `;
+  
+  await sql`
+    INSERT INTO predefined_categories
+    VALUES 
+    ('Electronics'),
+    ('Furniture'),
+    ('Household Items'),
+    ('Tools'),
+    ('Boxes');
+  `
+}

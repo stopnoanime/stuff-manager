@@ -18,16 +18,23 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      <h1 className="text-4xl font-light mb-6">
+      <div className='flex justify-between text-2xl font-light mb-6'>
+        <h1>
         {item.name}
-      </h1>
+        </h1>
+        <div className='flex gap-12'>
+          <Link 
+            className="link" 
+            href={params.id + '/edit'}>
+              Edit item
+          </Link>
+          <form action={deleteItemWithId}>
+            <button className='link'>Delete item</button>
+          </form>
+        </div>
+      </div>
       <div className='max-w-[70vw] mx-auto'>
-        <ItemForm readonly defaultValue={item}></ItemForm>
-        
-        <Link href={params.id + '/edit'}>Edit Item</Link>
-        <form action={deleteItemWithId}>
-          <button>Delete item</button>
-        </form>
+        {/* <ItemForm defaultValue={item}></ItemForm> */}
       </div>
     </div>
   );
