@@ -3,35 +3,36 @@
 @tailwind utilities;
 
 body {
-  @apply text-stone-900 bg-stone-50
+  @apply text-stone-900 bg-stone-50;
 }
 
 .link {
-  @apply underline text-sky-600 hover:text-sky-700
+  @apply underline text-sky-600 hover:text-sky-700;
 }
 
 .items-table th {
-  @apply font-light text-lg 
+  @apply font-light text-lg;
 }
 
 .items-table tbody tr {
-  @apply border-t border-solid border-stone-900
+  @apply border-t border-solid border-stone-900;
 }
 
-.items-table td, .items-table th {
-  @apply py-2 px-4 h-20
+.items-table td,
+.items-table th {
+  @apply py-2 px-4 h-20;
 }
 
 .item-form textarea {
-  @apply resize-none w-full h-full p-4 bg-stone-50
+  @apply resize-none w-full h-full p-4 bg-stone-50;
 }
 
 .item-form textarea,
 .default-border {
-  @apply border border-solid border-stone-900
+  @apply border border-solid border-stone-900;
 }
 
 .item-form textarea,
 .focus-outline {
-  @apply outline-slate-900 focus:outline outline-2
+  @apply outline-slate-900 focus:outline outline-2;
 }

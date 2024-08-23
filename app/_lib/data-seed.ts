@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres';
+import { sql } from "@vercel/postgres";
 
 export async function seedItems() {
   await sql`
@@ -23,7 +23,7 @@ export async function seedCategories() {
         category TEXT UNIQUE NOT NULL CHECK (category <> '')
       );
     `;
-  
+
   await sql`
     INSERT INTO predefined_categories
     VALUES 
@@ -32,5 +32,5 @@ export async function seedCategories() {
     ('Household Items'),
     ('Tools'),
     ('Boxes');
-  `
+  `;
 }

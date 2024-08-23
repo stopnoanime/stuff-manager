@@ -8,7 +8,7 @@ export async function fetchItem(id: string) {
     WHERE items.id = ${id};
   `;
 
-  return data.rows[0]
+  return data.rows[0];
 }
 
 export async function fetchAllItems() {
@@ -21,21 +21,21 @@ export async function fetchAllItems() {
 }
 
 export async function fetchAllItemsShort() {
-  const data = await sql<{id: string, name: string}>`
+  const data = await sql<{ id: string; name: string }>`
     SELECT id, name
     FROM items;
   `;
 
-  return data.rows.map(r => ({label: r.name, value: r.id}));
+  return data.rows.map((r) => ({ label: r.name, value: r.id }));
 }
 
 export async function fetchAllCategories() {
-  const data = await sql<{category: string}>`
+  const data = await sql<{ category: string }>`
     SELECT DISTINCT category FROM items WHERE category <> ''
     UNION
     SELECT DISTINCT category FROM predefined_categories
     ORDER BY category;
   `;
 
-  return data.rows.map(r => r.category);
+  return data.rows.map((r) => r.category);
 }
