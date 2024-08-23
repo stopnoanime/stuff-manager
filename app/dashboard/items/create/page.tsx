@@ -1,7 +1,7 @@
 import { createItem } from "@/app/_lib/data-actions";
 import {
   fetchAllCategories,
-  fetchAllItemsShort,
+  fetchAllItemsAsOptions,
 } from "@/app/_lib/data-fetches";
 import ItemForm from "@/app/_ui/items/item-form";
 import { Metadata } from "next";
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const [items, categories] = await Promise.all([
-    fetchAllItemsShort(),
+    fetchAllItemsAsOptions(),
     fetchAllCategories(),
   ]);
 

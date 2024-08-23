@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import {
   fetchAllCategories,
-  fetchAllItemsShort,
+  fetchAllItemsAsOptions,
   fetchItem,
 } from "@/app/_lib/data-fetches";
 import { notFound } from "next/navigation";
@@ -18,7 +18,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!item) notFound();
 
   const [items, categories] = await Promise.all([
-    fetchAllItemsShort(),
+    fetchAllItemsAsOptions(),
     fetchAllCategories(),
   ]);
 

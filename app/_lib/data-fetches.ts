@@ -1,6 +1,8 @@
 import { sql } from "@vercel/postgres";
 import { ItemsTable } from "./data-definitions";
 
+export type SelectOptions = { label: string; value: string }[];
+
 export async function fetchItem(id: string) {
   const data = await sql<ItemsTable>`
     SELECT *
@@ -20,7 +22,7 @@ export async function fetchAllItems() {
   return data.rows;
 }
 
-export async function fetchAllItemsShort() {
+export async function fetchAllItemsAsOptions(): Promise<SelectOptions> {
   const data = await sql<{ id: string; name: string }>`
     SELECT id, name
     FROM items;

@@ -6,6 +6,7 @@ import CreatableSelect from "react-select/creatable";
 import Select, { ClassNamesConfig, StylesConfig } from "react-select";
 import Image from "next/image";
 import noImage from "@/public/no-image.png";
+import { SelectOptions } from "@/app/_lib/data-fetches";
 
 export type ItemFormState = {
   errors?: {
@@ -23,7 +24,7 @@ export default function ItemForm({
   defaultValue?: ItemsTable;
   action: (prev: ItemFormState, d: FormData) => Promise<ItemFormState>;
   categories: string[];
-  otherItems: { label: string; value: string }[];
+  otherItems: SelectOptions;
 }) {
   const [state, formAction] = useActionState(action, {});
 
@@ -73,7 +74,8 @@ export default function ItemForm({
           className="object-contain "
           src={defaultValue?.image_url || noImage}
           fill
-          sizes="10vw"
+          priority
+          sizes="60vw"
           alt="Item image"
         />
       </div>
@@ -124,7 +126,7 @@ export default function ItemForm({
           placeholder="None"
           isClearable
           defaultValue={defaultCategory}
-          options={categories.map((c) => ({ label: c, name: c }))}
+          options={categories.map((c) => ({ label: c, value: c }))}
         />
       </label>
 
@@ -133,9 +135,9 @@ export default function ItemForm({
         <Select
           styles={selectStyles}
           name="parent_item_id"
-          defaultValue={defaultParent}
           placeholder="None"
           isClearable
+          defaultValue={defaultParent}
           options={otherItems}
         />
       </label>
