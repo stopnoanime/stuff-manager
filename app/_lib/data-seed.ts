@@ -6,7 +6,7 @@ export async function seedItems() {
         id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
         updated_at TIMESTAMPTZ NOT NULL,
 
-        parent_item_id UUID REFERENCES items(id),
+        parent_item_id UUID REFERENCES items(id) ON DELETE SET NULL,
 
         name TEXT NOT NULL CHECK (name <> ''),
         category TEXT NOT NULL,
@@ -19,7 +19,7 @@ export async function seedItems() {
 
 export async function seedCategories() {
   await sql`
-      CREATE TABLE predefined_categories (
+      CREATE TABLE IF NOT EXISTS predefined_categories (
         category TEXT UNIQUE NOT NULL CHECK (category <> '')
       );
     `;
@@ -31,6 +31,7 @@ export async function seedCategories() {
     ('Furniture'),
     ('Household Items'),
     ('Tools'),
-    ('Boxes');
+    ('Boxes')
+    ON CONFLICT DO NOTHING;
   `;
 }
