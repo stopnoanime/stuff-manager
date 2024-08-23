@@ -1,10 +1,10 @@
+import Menu from "../_ui/menu";
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-      <div className="w-full flex-none md:w-64">
-        Menu
-      </div>
-      <main className="grow p-6 md:overflow-y-auto md:p-12">{children}</main>
+    <div className="flex h-screen flex-row overflow-hidden">
+      <Menu/>
+      <main className="grow p-6 overflow-auto">{children}</main>
     </div>
   );
 }

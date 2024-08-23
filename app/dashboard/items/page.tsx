@@ -12,7 +12,12 @@ export default async function Page() {
 
   return (
     <div>
-      <ItemsList items={items}></ItemsList>
+      <h1 className="text-4xl font-light mb-6">
+        All Items
+      </h1>
+      <div className='max-w-[70vw] mx-auto'>
+        <ItemsList items={items}></ItemsList>
+      </div>
     </div>
   );
 }
