@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import { fetchItem } from "@/app/_lib/data-fetches";
 import { notFound } from "next/navigation";
-import ItemForm from "@/app/_ui/items/item-form";
 import Link from "next/link";
 import { deleteItem } from "@/app/_lib/data-actions";
+import ItemDisplay from "@/app/_ui/items/item-display";
 
 export const metadata: Metadata = {
   title: "Item Info",
@@ -29,7 +29,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="max-w-[70vw] mx-auto">
-        {/* <ItemForm defaultValue={item}></ItemForm> */}
+        <ItemDisplay item={item}></ItemDisplay>
       </div>
     </div>
   );

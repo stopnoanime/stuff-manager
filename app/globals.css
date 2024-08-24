@@ -23,16 +23,26 @@ body {
   @apply py-2 px-4 h-20;
 }
 
-.item-form textarea {
+.textarea {
   @apply resize-none w-full h-full p-4 bg-stone-50;
 }
 
-.item-form textarea,
+.textarea,
+.styled-text-input,
 .default-border {
   @apply border border-solid border-stone-900;
 }
 
-.item-form textarea,
+.textarea,
+.styled-text-input,
 .focus-outline {
   @apply outline-slate-900 focus:outline outline-2;
+}
+
+.textarea::placeholder {
+  @apply text-stone-400 opacity-100;
+}
+
+.styled-text-input {
+  @apply px-[10px] py-[6px] w-full bg-stone-50;
 }

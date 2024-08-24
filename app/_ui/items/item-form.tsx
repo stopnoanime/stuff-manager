@@ -1,12 +1,12 @@
 "use client";
 
-import { ItemsTable } from "@/app/_lib/data-definitions";
+import { ItemWithParent } from "@/app/_lib/data-definitions";
 import { useActionState, useId } from "react";
 import CreatableSelect from "react-select/creatable";
 import Select, { StylesConfig } from "react-select";
 import Image from "next/image";
 import noImage from "@/public/no-image.png";
-import { SelectOptions } from "@/app/_lib/data-fetches";
+import { SelectOptions } from "@/app/_lib/data-definitions";
 
 export type ItemFormState = {
   errors?: {
@@ -21,7 +21,7 @@ export default function ItemForm({
   categories,
   otherItems,
 }: {
-  defaultValue?: ItemsTable;
+  defaultValue?: ItemWithParent;
   action: (prev: ItemFormState, d: FormData) => Promise<ItemFormState>;
   categories: string[];
   otherItems: SelectOptions;
@@ -58,13 +58,20 @@ export default function ItemForm({
       ...base,
       padding: 0,
     }),
+    placeholder: (base, state) => ({
+      ...base,
+      color: "#a8a29e",
+    }),
   };
 
   const defaultCategory = defaultValue?.category
     ? { label: defaultValue.category, value: defaultValue.category }
     : null;
   const defaultParent = defaultValue?.parent_item_id
-    ? otherItems.filter((p) => p.value === defaultValue.parent_item_id)[0]
+    ? {
+        label: defaultValue.parent_item_name,
+        value: defaultValue.parent_item_id,
+      }
     : null;
 
   return (
@@ -87,6 +94,7 @@ export default function ItemForm({
       ></input>
 
       <textarea
+        className="textarea"
         name="description"
         defaultValue={defaultValue?.description}
         placeholder="Item Description"
@@ -97,7 +105,7 @@ export default function ItemForm({
         <input
           type="text"
           name="name"
-          className="focus-outline block default-border px-[10px] py-[7px] w-full bg-stone-50"
+          className="styled-text-input"
           defaultValue={defaultValue?.name}
           aria-describedby="name-errors"
           placeholder="Item Name"
@@ -113,7 +121,7 @@ export default function ItemForm({
 
       <textarea
         name="location_description"
-        className="col-start-2 row-span-3"
+        className="col-start-2 row-span-3 textarea"
         defaultValue={defaultValue?.location_description}
         placeholder="Item Location Description"
       ></textarea>

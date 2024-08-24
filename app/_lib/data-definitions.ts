@@ -10,3 +10,9 @@ export type ItemsTable = {
   description: string;
   location_description: string;
 };
+
+export type ItemWithParent = ItemsTable & {
+  parent_item_name: string | null;
+};
+
+export type SelectOptions = { label: string; value: string }[];

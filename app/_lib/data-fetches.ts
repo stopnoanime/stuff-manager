@@ -1,13 +1,13 @@
 import { sql } from "@vercel/postgres";
-import { ItemsTable } from "./data-definitions";
-
-export type SelectOptions = { label: string; value: string }[];
+import { ItemsTable, ItemWithParent, SelectOptions } from "./data-definitions";
 
 export async function fetchItem(id: string) {
-  const data = await sql<ItemsTable>`
-    SELECT *
-    FROM items
-    WHERE items.id = ${id};
+  const data = await sql<ItemWithParent>`
+    SELECT t1.*, t2.name as parent_item_name
+    FROM items t1
+    LEFT JOIN items t2
+    ON t1.parent_item_id = t2.id
+    WHERE t1.id = ${id};
   `;
 
   return data.rows[0];
