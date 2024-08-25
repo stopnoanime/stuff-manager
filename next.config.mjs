@@ -4,9 +4,14 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "upload.wikimedia.org",
+        hostname: process.env.S3_ENDPOINT.replace(/^https:\/\//, ''),
       },
     ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "8mb",
+    },
   },
 };
 

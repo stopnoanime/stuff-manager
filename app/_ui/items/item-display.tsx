@@ -27,7 +27,7 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
 
       <div>
         Name
-        <div className="styled-text-input">{item.name}</div>
+        <div className="styled-input">{item.name}</div>
       </div>
 
       <div
@@ -41,18 +41,14 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
 
       <div>
         Category
-        <div className={"styled-text-input" + placeholderColor(item.category)}>
+        <div className={"styled-input" + placeholderColor(item.category)}>
           {item.category || "None"}
         </div>
       </div>
 
       <div>
         Parent item
-        <div
-          className={
-            "styled-text-input" + placeholderColor(item.parent_item_id)
-          }
-        >
+        <div className={"styled-input" + placeholderColor(item.parent_item_id)}>
           {item.parent_item_id ? (
             <Link
               className="link"

@@ -3,16 +3,21 @@
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import { ItemFormState } from "../_ui/items/item-form";
+import {
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
+import { ItemFormSchema } from "./data-definitions";
 
-const ItemFormSchema = z.object({
-  parent_item_id: z.string().nullable(),
-  name: z.string().min(1, "Please enter a name."),
-  category: z.string(),
-  image_url: z.string(),
-  description: z.string(),
-  location_description: z.string(),
+const s3Client = new S3Client({
+  region: process.env.S3_REGION,
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+  },
+  endpoint: process.env.S3_ENDPOINT,
+  forcePathStyle: true,
 });
 
 function revalidateAndRedirectItems(): never {
@@ -42,10 +47,34 @@ export async function createItem(
 
   if (d.parent_item_id === "") d.parent_item_id = null;
 
+  let image_url = '';
+
+  if (d.image.size !== 0) {
+    try {
+      const imageExtension = d.image.type.split('/')[1];
+      const imageName = crypto.randomUUID() + "." + imageExtension;
+      const imageData = await d.image.arrayBuffer();
+
+      const command = new PutObjectCommand({
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: imageName,
+        Body: imageData as Buffer,
+      });
+
+      await s3Client.send(command);
+
+      image_url = `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET_NAME}/${imageName}`;
+    } catch(err) {
+      return {
+        message: "Image upload error. Could not create item."
+      }
+    }
+  }
+
   try {
     await sql`
     INSERT INTO items (updated_at, parent_item_id, name, category, image_url, description, location_description)
-    VALUES (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${d.image_url}, ${d.description}, ${d.location_description})
+    VALUES (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${image_url}, ${d.description}, ${d.location_description})
   `;
   } catch (err) {
     return {

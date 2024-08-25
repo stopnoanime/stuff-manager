@@ -1,7 +1,13 @@
 "use client";
 
 import { ItemWithParent } from "@/app/_lib/data-definitions";
-import { useActionState, useId } from "react";
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  useActionState,
+  useId,
+  useState,
+} from "react";
 import CreatableSelect from "react-select/creatable";
 import Select, { StylesConfig } from "react-select";
 import Image from "next/image";
@@ -11,6 +17,7 @@ import { SelectOptions } from "@/app/_lib/data-definitions";
 export type ItemFormState = {
   errors?: {
     name?: string[];
+    image?: string[];
   };
   message?: string | null;
 };
@@ -26,7 +33,9 @@ export default function ItemForm({
   categories: string[];
   otherItems: SelectOptions;
 }) {
+  const defaultImage = defaultValue?.image_url || noImage;
   const [state, formAction] = useActionState(action, {});
+  const [imageSrc, setImageSrc] = useState(defaultImage);
 
   const selectStyles: StylesConfig = {
     control: (base, state) => ({
@@ -74,24 +83,41 @@ export default function ItemForm({
       }
     : null;
 
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) setImageSrc(URL.createObjectURL(file));
+  };
+
   return (
     <form action={formAction} className="grid grid-cols-2 gap-4 item-form">
-      <div className="w-full aspect-video relative">
-        <Image
-          className="object-contain "
-          src={defaultValue?.image_url || noImage}
-          fill
-          priority
-          sizes="60vw"
-          alt="Item image"
-        />
+      <div>
+        <div className="aspect-video relative">
+          <Image
+            className="object-contain"
+            src={imageSrc}
+            fill
+            priority
+            sizes="60vw"
+            alt="Item image"
+          />
+        </div>
+        <input
+          className="styled-input"
+          type="file"
+          name="image"
+          aria-describedby="image-errors"
+          accept=".jpg,.jpeg,.png,.webp"
+          onChange={handleImageChange}
+        ></input>
+        <div id="image-errors" className="text-red-500 text-sm">
+          {state?.errors?.image?.map((e) => (
+            <span key={e}>
+              {e}
+            </span>
+          ))}
+        </div>
       </div>
-      <input
-        hidden
-        type="text"
-        name="image_url"
-        defaultValue={defaultValue?.image_url}
-      ></input>
 
       <textarea
         className="textarea"
@@ -105,16 +131,16 @@ export default function ItemForm({
         <input
           type="text"
           name="name"
-          className="styled-text-input"
+          className="styled-input"
           defaultValue={defaultValue?.name}
           aria-describedby="name-errors"
           placeholder="Item Name"
         ></input>
-        <p id="name-errors">
+        <p id="name-errors" className="text-red-500 text-sm">
           {state?.errors?.name?.map((e) => (
-            <p className="text-red-500 text-sm" key={e}>
+            <span key={e}>
               {e}
-            </p>
+            </span>
           ))}
         </p>
       </label>
@@ -152,9 +178,9 @@ export default function ItemForm({
         />
       </label>
 
-      <div className="col-span-2">
+      <div className="col-span-2 text-sm text-red-500">
         {state?.message && (
-          <p className="text-sm text-red-500">{state.message}</p>
+          <span>{state.message}</span>
         )}
       </div>
 

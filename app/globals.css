@@ -28,13 +28,13 @@ body {
 }
 
 .textarea,
-.styled-text-input,
+.styled-input,
 .default-border {
   @apply border border-solid border-stone-900;
 }
 
 .textarea,
-.styled-text-input,
+.styled-input,
 .focus-outline {
   @apply outline-slate-900 focus:outline outline-2;
 }
@@ -43,6 +43,6 @@ body {
   @apply text-stone-400 opacity-100;
 }
 
-.styled-text-input {
+.styled-input {
   @apply px-[10px] py-[6px] w-full bg-stone-50;
 }
