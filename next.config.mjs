@@ -4,13 +4,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: process.env.S3_ENDPOINT.replace(/^https:\/\//, ''),
+        hostname: process.env.S3_ENDPOINT.replace(/^https:\/\//, ""),
       },
     ],
   },
   experimental: {
     serverActions: {
-      bodySizeLimit: "8mb",
+      bodySizeLimit: "5mb",
     },
   },
 };

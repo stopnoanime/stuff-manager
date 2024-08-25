@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ItemFormState } from "../_ui/items/item-form";
 import {
+  DeleteObjectCommand,
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
@@ -19,6 +20,14 @@ const s3Client = new S3Client({
   endpoint: process.env.S3_ENDPOINT,
   forcePathStyle: true,
 });
+
+function createImageUrl(imageKey: string) {
+  return `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET_NAME}/${imageKey}`;
+}
+
+function getImageKey(imageUrl: string) {
+  return imageUrl.split("/").pop();
+}
 
 function revalidateAndRedirectItems(): never {
   revalidatePath("/dashboard/items");
@@ -47,27 +56,27 @@ export async function createItem(
 
   if (d.parent_item_id === "") d.parent_item_id = null;
 
-  let image_url = '';
+  let image_url = "";
 
   if (d.image.size !== 0) {
     try {
-      const imageExtension = d.image.type.split('/')[1];
-      const imageName = crypto.randomUUID() + "." + imageExtension;
+      const imageExtension = d.image.type.split("/")[1];
+      const imageKey = crypto.randomUUID() + "." + imageExtension;
       const imageData = await d.image.arrayBuffer();
 
       const command = new PutObjectCommand({
         Bucket: process.env.S3_BUCKET_NAME,
-        Key: imageName,
+        Key: imageKey,
         Body: imageData as Buffer,
       });
 
       await s3Client.send(command);
 
-      image_url = `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET_NAME}/${imageName}`;
-    } catch(err) {
+      image_url = createImageUrl(imageKey);
+    } catch (err) {
       return {
-        message: "Image upload error. Could not create item."
-      }
+        message: "Image upload error. Could not create item.",
+      };
     }
   }
 
@@ -122,7 +131,29 @@ export async function editItem(
 }
 
 export async function deleteItem(id: string) {
-  await sql`DELETE FROM items WHERE items.id = ${id}`;
+  try {
+    const data = await sql<{
+      image_url: string;
+    }>`SELECT image_url FROM items WHERE items.id = ${id}`;
+
+    if (data.rowCount !== 1) throw new Error("Invalid item id.");
+
+    await sql`DELETE FROM items WHERE items.id = ${id}`;
+
+    // Delete item image if exists
+    if (data.rows[0].image_url) {
+      const command = new DeleteObjectCommand({
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: getImageKey(data.rows[0].image_url),
+      });
+
+      await s3Client.send(command);
+    }
+  } catch (err) {
+    return {
+      message: "Could not delete item.",
+    };
+  }
 
   revalidateAndRedirectItems();
 }

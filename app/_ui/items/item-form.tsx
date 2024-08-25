@@ -111,11 +111,7 @@ export default function ItemForm({
           onChange={handleImageChange}
         ></input>
         <div id="image-errors" className="text-red-500 text-sm">
-          {state?.errors?.image?.map((e) => (
-            <span key={e}>
-              {e}
-            </span>
-          ))}
+          {state?.errors?.image?.map((e) => <p key={e}>{e}</p>)}
         </div>
       </div>
 
@@ -137,11 +133,7 @@ export default function ItemForm({
           placeholder="Item Name"
         ></input>
         <p id="name-errors" className="text-red-500 text-sm">
-          {state?.errors?.name?.map((e) => (
-            <span key={e}>
-              {e}
-            </span>
-          ))}
+          {state?.errors?.name?.map((e) => <span key={e}>{e}</span>)}
         </p>
       </label>
 
@@ -179,9 +171,7 @@ export default function ItemForm({
       </label>
 
       <div className="col-span-2 text-sm text-red-500">
-        {state?.message && (
-          <span>{state.message}</span>
-        )}
+        {state?.message && <p>{state.message}</p>}
       </div>
 
       <button className="col-span-2 px-6 py-2 bg-stone-900 text-stone-50 focus-outline outline-offset-2">
