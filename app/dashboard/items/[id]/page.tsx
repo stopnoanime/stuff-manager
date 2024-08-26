@@ -2,9 +2,7 @@ import { Metadata } from "next";
 import { fetchItem } from "@/app/_lib/data-fetches";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { deleteItem } from "@/app/_lib/data-actions";
 import ItemDisplay from "@/app/_ui/items/item-display";
-import { useActionState } from "react";
 import ItemDelete from "@/app/_ui/items/item-delete";
 
 export const metadata: Metadata = {

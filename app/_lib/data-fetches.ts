@@ -1,7 +1,10 @@
 import { sql } from "@vercel/postgres";
 import { ItemsTable, ItemWithParent, SelectOptions } from "./data-definitions";
+import { z } from "zod";
 
 export async function fetchItem(id: string) {
+  if (!z.string().uuid().safeParse(id).success) return undefined;
+
   const data = await sql<ItemWithParent>`
     SELECT t1.*, t2.name as parent_item_name
     FROM items t1
