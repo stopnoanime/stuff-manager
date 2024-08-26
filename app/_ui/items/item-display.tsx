@@ -10,15 +10,17 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
 
   return (
     <div className="grid grid-cols-2 gap-4 item-form">
-      <div className="w-full aspect-video relative">
-        <Image
-          className="object-contain "
-          src={item.image_url || noImage}
-          fill
-          priority
-          sizes="60vw"
-          alt="Item image"
-        />
+      <div className="styled-input">
+        <div className="aspect-video relative">
+          <Image
+            className="object-contain "
+            src={item.image_url || noImage}
+            fill
+            priority
+            sizes="60vw"
+            alt="Item image"
+          />
+        </div>
       </div>
 
       <div className={"textarea" + placeholderColor(item.description)}>

@@ -1,18 +1,11 @@
 "use client";
 
 import { ItemWithParent } from "@/app/_lib/data-definitions";
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  useActionState,
-  useId,
-  useState,
-} from "react";
+import { FormEvent, startTransition, useActionState, useId } from "react";
 import CreatableSelect from "react-select/creatable";
 import Select, { StylesConfig } from "react-select";
-import Image from "next/image";
-import noImage from "@/public/no-image.png";
 import { SelectOptions } from "@/app/_lib/data-definitions";
+import ImageInput from "./image-input";
 
 export type ItemFormState = {
   errors?: {
@@ -33,45 +26,7 @@ export default function ItemForm({
   categories: string[];
   otherItems: SelectOptions;
 }) {
-  const defaultImage = defaultValue?.image_url || noImage;
-  const [state, formAction] = useActionState(action, {});
-  const [imageSrc, setImageSrc] = useState(defaultImage);
-
-  const selectStyles: StylesConfig = {
-    control: (base, state) => ({
-      ...base,
-      transition: "none",
-      border: "1px solid #0f172a !important",
-      borderRadius: 0,
-      outline: "2px #0f172a " + (state.isFocused ? "solid" : ""),
-      boxShadow: "none",
-      backgroundColor: "#fafaf9",
-    }),
-    menu: (base, state) => ({
-      ...base,
-      outline: "2px #0f172a solid",
-      border: "1px solid #0f172a !important",
-      borderRadius: 0,
-      boxShadow: "none",
-      backgroundColor: "#fafaf9",
-    }),
-    option: (base, state) => ({
-      ...base,
-      backgroundColor: state.isSelected
-        ? "#1c1917"
-        : state.isFocused
-          ? "#d6d3d1"
-          : "transparent",
-    }),
-    menuList: (base, state) => ({
-      ...base,
-      padding: 0,
-    }),
-    placeholder: (base, state) => ({
-      ...base,
-      color: "#a8a29e",
-    }),
-  };
+  const [actionState, formAction] = useActionState(action, {});
 
   const defaultCategory = defaultValue?.category
     ? { label: defaultValue.category, value: defaultValue.category }
@@ -83,44 +38,25 @@ export default function ItemForm({
       }
     : null;
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    if (file) setImageSrc(URL.createObjectURL(file));
-  };
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    startTransition(() => formAction(formData));
+  }
 
   return (
-    <form action={formAction} className="grid grid-cols-2 gap-4 item-form">
-      <div>
-        <div className="aspect-video relative">
-          <Image
-            className="object-contain"
-            src={imageSrc}
-            fill
-            priority
-            sizes="60vw"
-            alt="Item image"
-          />
-        </div>
-        <input
-          className="styled-input"
-          type="file"
-          name="image"
-          aria-describedby="image-errors"
-          accept=".jpg,.jpeg,.png,.webp"
-          onChange={handleImageChange}
-        ></input>
-        <div id="image-errors" className="text-red-500 text-sm">
-          {state?.errors?.image?.map((e) => <p key={e}>{e}</p>)}
-        </div>
-      </div>
+    <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4 item-form">
+      <ImageInput
+        defaultImage={defaultValue?.image_url}
+        errors={actionState.errors?.image}
+      />
 
       <textarea
         className="textarea"
         name="description"
         defaultValue={defaultValue?.description}
         placeholder="Item Description"
-      ></textarea>
+      />
 
       <label>
         Name
@@ -133,7 +69,7 @@ export default function ItemForm({
           placeholder="Item Name"
         ></input>
         <p id="name-errors" className="text-red-500 text-sm">
-          {state?.errors?.name?.map((e) => <span key={e}>{e}</span>)}
+          {actionState?.errors?.name?.map((e) => <span key={e}>{e}</span>)}
         </p>
       </label>
 
@@ -142,7 +78,7 @@ export default function ItemForm({
         className="col-start-2 row-span-3 textarea"
         defaultValue={defaultValue?.location_description}
         placeholder="Item Location Description"
-      ></textarea>
+      />
 
       <label>
         Category
@@ -171,7 +107,7 @@ export default function ItemForm({
       </label>
 
       <div className="col-span-2 text-sm text-red-500">
-        {state?.message && <p>{state.message}</p>}
+        {actionState?.message && <p>{actionState.message}</p>}
       </div>
 
       <button className="col-span-2 px-6 py-2 bg-stone-900 text-stone-50 focus-outline outline-offset-2">
@@ -180,3 +116,39 @@ export default function ItemForm({
     </form>
   );
 }
+
+const selectStyles: StylesConfig = {
+  control: (base, state) => ({
+    ...base,
+    transition: "none",
+    border: "1px solid #0f172a !important",
+    borderRadius: 0,
+    outline: "2px #0f172a " + (state.isFocused ? "solid" : ""),
+    boxShadow: "none",
+    backgroundColor: "#fafaf9",
+  }),
+  menu: (base, state) => ({
+    ...base,
+    outline: "2px #0f172a solid",
+    border: "1px solid #0f172a !important",
+    borderRadius: 0,
+    boxShadow: "none",
+    backgroundColor: "#fafaf9",
+  }),
+  option: (base, state) => ({
+    ...base,
+    backgroundColor: state.isSelected
+      ? "#1c1917"
+      : state.isFocused
+        ? "#d6d3d1"
+        : "transparent",
+  }),
+  menuList: (base, state) => ({
+    ...base,
+    padding: 0,
+  }),
+  placeholder: (base, state) => ({
+    ...base,
+    color: "#a8a29e",
+  }),
+};

@@ -37,6 +37,45 @@ function revalidateAndRedirectItems(): never {
   redirect("/dashboard/items");
 }
 
+async function getItemImageURL(id: string) {
+  const data = await sql<{
+    image_url: string;
+  }>`SELECT image_url FROM items WHERE items.id = ${id}`;
+
+  if (data.rowCount !== 1) throw new Error("Invalid item id.");
+
+  return data.rows[0].image_url;
+}
+
+async function deleteItemImage(image_url: string) {
+  if (image_url) {
+    const command = new DeleteObjectCommand({
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: getImageKey(image_url),
+    });
+
+    await s3Client.send(command);
+  }
+}
+
+async function uploadItemImage(image: File) {
+  if (image.size === 0) return "";
+
+  const imageExtension = image.type.split("/")[1];
+  const imageKey = crypto.randomUUID() + "." + imageExtension;
+  const imageData = await image.arrayBuffer();
+
+  const command = new PutObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: imageKey,
+    Body: imageData as Buffer,
+  });
+
+  await s3Client.send(command);
+
+  return createImageUrl(imageKey);
+}
+
 export async function createItem(
   prevState: ItemFormState,
   formData: FormData,
@@ -52,42 +91,20 @@ export async function createItem(
     };
   }
 
-  const d = validatedForm.data;
-
-  if (d.parent_item_id === "") d.parent_item_id = null;
-
-  let image_url = "";
-
-  if (d.image.size !== 0) {
-    try {
-      const imageExtension = d.image.type.split("/")[1];
-      const imageKey = crypto.randomUUID() + "." + imageExtension;
-      const imageData = await d.image.arrayBuffer();
-
-      const command = new PutObjectCommand({
-        Bucket: process.env.S3_BUCKET_NAME,
-        Key: imageKey,
-        Body: imageData as Buffer,
-      });
-
-      await s3Client.send(command);
-
-      image_url = createImageUrl(imageKey);
-    } catch (err) {
-      return {
-        message: "Image upload error. Could not create item.",
-      };
-    }
-  }
-
   try {
+    const d = validatedForm.data;
+
+    if (d.parent_item_id === "") d.parent_item_id = null;
+
+    const image_url = await uploadItemImage(d.image);
+
     await sql`
-    INSERT INTO items (updated_at, parent_item_id, name, category, image_url, description, location_description)
-    VALUES (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${image_url}, ${d.description}, ${d.location_description})
-  `;
+      INSERT INTO items (updated_at, parent_item_id, name, category, image_url, description, location_description)
+      VALUES (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${image_url}, ${d.description}, ${d.location_description})
+    `;
   } catch (err) {
     return {
-      message: "Database error. Could not create item.",
+      message: "Internal server error. Could not create item.",
     };
   }
 
@@ -110,20 +127,26 @@ export async function editItem(
     };
   }
 
-  const d = validatedForm.data;
-
-  if (d.parent_item_id === "") d.parent_item_id = null;
-
   try {
+    const d = validatedForm.data;
+
+    if (d.parent_item_id === "") d.parent_item_id = null;
+
+    const old_image_url = await getItemImageURL(id);
+    const new_image_url =
+      (await uploadItemImage(d.image)) || (d.delete_image ? "" : old_image_url);
+
     await sql`
-    UPDATE items 
-    SET (updated_at, parent_item_id, name, category, image_url, description, location_description) =
-    (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${d.image_url}, ${d.description}, ${d.location_description})
-    WHERE items.id = ${id};
-  `;
+      UPDATE items 
+      SET (updated_at, parent_item_id, name, category, image_url, description, location_description) =
+      (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${new_image_url}, ${d.description}, ${d.location_description})
+      WHERE items.id = ${id};
+    `;
+
+    if (old_image_url !== new_image_url) deleteItemImage(old_image_url);
   } catch (err) {
     return {
-      message: "Database error. Could not edit item.",
+      message: "Internal server error. Could not edit item.",
     };
   }
 
@@ -132,26 +155,14 @@ export async function editItem(
 
 export async function deleteItem(id: string) {
   try {
-    const data = await sql<{
-      image_url: string;
-    }>`SELECT image_url FROM items WHERE items.id = ${id}`;
-
-    if (data.rowCount !== 1) throw new Error("Invalid item id.");
+    const image_url = await getItemImageURL(id);
 
     await sql`DELETE FROM items WHERE items.id = ${id}`;
 
-    // Delete item image if exists
-    if (data.rows[0].image_url) {
-      const command = new DeleteObjectCommand({
-        Bucket: process.env.S3_BUCKET_NAME,
-        Key: getImageKey(data.rows[0].image_url),
-      });
-
-      await s3Client.send(command);
-    }
+    await deleteItemImage(image_url);
   } catch (err) {
     return {
-      message: "Could not delete item.",
+      message: "Internal server error. Could not delete item.",
     };
   }
 
