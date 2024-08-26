@@ -10,6 +10,7 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import { ItemFormSchema } from "./data-definitions";
+import { ItemDeleteState } from "../_ui/items/item-delete";
 
 const s3Client = new S3Client({
   region: process.env.S3_REGION,
@@ -153,7 +154,7 @@ export async function editItem(
   revalidateAndRedirectItems();
 }
 
-export async function deleteItem(id: string) {
+export async function deleteItem(id: string): Promise<ItemDeleteState> {
   try {
     const image_url = await getItemImageURL(id);
 

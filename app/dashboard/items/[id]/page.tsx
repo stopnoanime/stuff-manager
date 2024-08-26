@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { deleteItem } from "@/app/_lib/data-actions";
 import ItemDisplay from "@/app/_ui/items/item-display";
+import { useActionState } from "react";
+import ItemDelete from "@/app/_ui/items/item-delete";
 
 export const metadata: Metadata = {
   title: "Item Info",
@@ -11,7 +13,6 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: { id: string } }) {
   const item = await fetchItem(params.id);
-  const deleteItemWithId = deleteItem.bind(null, params.id);
 
   if (!item) notFound();
 
@@ -23,9 +24,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           <Link className="link" href={params.id + "/edit"}>
             Edit item
           </Link>
-          <form action={deleteItemWithId}>
-            <button className="link">Delete item</button>
-          </form>
+          <ItemDelete id={item.id} />
         </div>
       </div>
       <div className="max-w-[70vw] mx-auto">

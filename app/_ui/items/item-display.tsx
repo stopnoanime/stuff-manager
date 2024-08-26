@@ -1,5 +1,3 @@
-"use client";
-
 import { ItemWithParent } from "@/app/_lib/data-definitions";
 import Image from "next/image";
 import noImage from "@/public/no-image.png";
