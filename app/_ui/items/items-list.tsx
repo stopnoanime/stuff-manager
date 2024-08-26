@@ -16,7 +16,7 @@ export default function ItemsList({ items }: { items: ItemsTable[] }) {
       </thead>
       <tbody>
         {items.map((item) => (
-          <tr key={item.id} className="">
+          <tr key={item.id}>
             <td>
               <Link className="link" href={`/dashboard/items/${item.id}`}>
                 {item.name}
@@ -37,6 +37,13 @@ export default function ItemsList({ items }: { items: ItemsTable[] }) {
             </td>
           </tr>
         ))}
+        {!items.length && (
+          <tr>
+            <td colSpan={4} className="font-light text-lg !pt-6">
+              No Items
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   );

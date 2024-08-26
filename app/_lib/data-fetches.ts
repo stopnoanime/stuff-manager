@@ -16,6 +16,18 @@ export async function fetchItem(id: string) {
   return data.rows[0];
 }
 
+export async function fetchChildItems(id: string) {
+  if (!z.string().uuid().safeParse(id).success) return [];
+
+  const data = await sql<ItemsTable>`
+    SELECT *
+    FROM items
+    WHERE parent_item_id = ${id};
+  `;
+
+  return data.rows;
+}
+
 export async function fetchAllItems() {
   const data = await sql<ItemsTable>`
     SELECT *
