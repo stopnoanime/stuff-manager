@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState, DragEvent } from "react";
 import noImage from "@/public/no-image.png";
+import { ALLOWED_IMAGE_TYPES } from "@/app/_lib/data-definitions";
 
 export default function ImageInput({
   defaultImage,
@@ -13,6 +14,7 @@ export default function ImageInput({
   const [deleteImage, setDeleteImage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState("");
+  const [isDrag, setIsDrag] = useState(false);
 
   function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -29,10 +31,45 @@ export default function ImageInput({
     fileInputRef.current!.value = "";
   }
 
+  function handleDragOver(event: DragEvent) {
+    event.preventDefault();
+    setIsDrag(true);
+  }
+
+  function handleDrop(event: DragEvent) {
+    event.preventDefault();
+    setIsDrag(false);
+
+    if (event.dataTransfer.files.length !== 1) return;
+
+    const file = event.dataTransfer.files[0];
+
+    if (file && ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      setImageSrc(URL.createObjectURL(file));
+      setFileName(file.name);
+      fileInputRef.current!.files = event.dataTransfer.files;
+    }
+  }
+
+  function handleDragLeave() {
+    setIsDrag(false);
+  }
+
   return (
-    <div className="styled-input">
-      <input hidden type="text" value={deleteImage} name="delete_image"></input>
-      <div className="aspect-video relative">
+    <div
+      className="styled-input relative"
+      onDrop={handleDrop}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
+    >
+      <input
+        hidden
+        type="text"
+        value={deleteImage}
+        readOnly
+        name="delete_image"
+      ></input>
+      <div className="aspect-video relative pointer-events-none">
         <Image
           className="object-contain"
           src={imageSrc}
@@ -65,6 +102,12 @@ export default function ImageInput({
           </button>
         )}
       </div>
+
+      {isDrag && (
+        <div className="absolute top-0 right-0 bottom-0 left-0 opacity-80 bg-stone-200 grid place-items-center text-xl pointer-events-none">
+          Drop your images here
+        </div>
+      )}
 
       <div id="image-errors" className="text-red-500 text-sm">
         {errors?.map((e) => <p key={e}>{e}</p>)}
