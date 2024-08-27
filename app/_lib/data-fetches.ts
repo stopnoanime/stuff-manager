@@ -27,7 +27,8 @@ export async function fetchChildItems(id: string) {
   const data = await sql<Item>`
     SELECT *
     FROM items
-    WHERE parent_item_id = ${id};
+    WHERE parent_item_id = ${id}
+    ORDER BY lower(name);
   `;
 
   return data.rows;
@@ -36,7 +37,8 @@ export async function fetchChildItems(id: string) {
 export async function fetchAllItems() {
   const data = await sql<Item>`
     SELECT *
-    FROM items;
+    FROM items
+    ORDER BY lower(name);
   `;
 
   return data.rows;
@@ -45,7 +47,8 @@ export async function fetchAllItems() {
 export async function fetchAllItemsAsOptions(): Promise<SelectOptions> {
   const data = await sql<{ id: string; name: string }>`
     SELECT id, name
-    FROM items;
+    FROM items
+    ORDER BY lower(name);
   `;
 
   return data.rows.map((r) => ({ label: r.name, value: r.id }));
@@ -53,10 +56,13 @@ export async function fetchAllItemsAsOptions(): Promise<SelectOptions> {
 
 export async function fetchAllCategories() {
   const data = await sql<{ category: string }>`
-    SELECT DISTINCT category FROM items WHERE category <> ''
-    UNION
-    SELECT DISTINCT category FROM predefined_categories
-    ORDER BY category;
+    SELECT *
+    FROM (
+      SELECT DISTINCT category FROM items WHERE category <> ''
+      UNION
+      SELECT DISTINCT category FROM predefined_categories
+    )
+    ORDER BY lower(category);
   `;
 
   return data.rows.map((r) => r.category);
@@ -84,7 +90,8 @@ export async function fetchAllRootItems() {
   const data = await sql<Item>`
     SELECT *
     FROM items 
-    WHERE parent_item_id IS NULL;
+    WHERE parent_item_id IS NULL
+    ORDER BY lower(name);
   `;
 
   return data.rows;
