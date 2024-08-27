@@ -5,7 +5,7 @@ export default function ItemsGrid({ items }: { items: Item[] }) {
   return (
     <div className="flex flex-wrap gap-4">
       {items.map((item) => (
-        <ItemCard item={item}></ItemCard>
+        <ItemCard key={item.id} item={item}></ItemCard>
       ))}
       {items.length === 0 && (
         <div className="w-full font-light text-lg pt-4 text-center">

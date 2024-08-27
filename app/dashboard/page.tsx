@@ -44,7 +44,7 @@ export default async function Page() {
         </div>
 
         {items.map((item) => (
-          <ItemCard item={item}></ItemCard>
+          <ItemCard key={item.id} item={item}></ItemCard>
         ))}
 
         {items.length == 0 && (
