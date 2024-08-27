@@ -1,5 +1,10 @@
 import { sql } from "@vercel/postgres";
-import { ItemsTable, ItemWithParent, SelectOptions } from "./data-definitions";
+import {
+  Item,
+  ItemWithParent,
+  ItemWithPath,
+  SelectOptions,
+} from "./data-definitions";
 import { z } from "zod";
 
 export async function fetchItem(id: string) {
@@ -19,7 +24,7 @@ export async function fetchItem(id: string) {
 export async function fetchChildItems(id: string) {
   if (!z.string().uuid().safeParse(id).success) return [];
 
-  const data = await sql<ItemsTable>`
+  const data = await sql<Item>`
     SELECT *
     FROM items
     WHERE parent_item_id = ${id};
@@ -29,7 +34,7 @@ export async function fetchChildItems(id: string) {
 }
 
 export async function fetchAllItems() {
-  const data = await sql<ItemsTable>`
+  const data = await sql<Item>`
     SELECT *
     FROM items;
   `;
@@ -55,4 +60,32 @@ export async function fetchAllCategories() {
   `;
 
   return data.rows.map((r) => r.category);
+}
+
+export async function fetchAllItemsAsTree() {
+  const data = await sql<ItemWithPath>`
+    WITH RECURSIVE items_tree AS (
+        SELECT *, ARRAY[id] AS path
+        FROM items WHERE parent_item_id IS NULL
+      UNION
+        SELECT t.*, items_tree.path || t.id
+        FROM items t
+        JOIN items_tree ON items_tree.id = t.parent_item_id
+    )
+    SELECT *, array_length(path,1) - 1 AS depth
+    FROM items_tree
+    ORDER BY path;
+  `;
+
+  return data.rows;
+}
+
+export async function fetchAllRootItems() {
+  const data = await sql<Item>`
+    SELECT *
+    FROM items 
+    WHERE parent_item_id IS NULL;
+  `;
+
+  return data.rows;
 }

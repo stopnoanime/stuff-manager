@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Items",
+  title: "All items",
 };
 
 export default async function Page() {

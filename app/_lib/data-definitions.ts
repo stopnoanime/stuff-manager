@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export type ItemsTable = {
+export type Item = {
   id: string;
   updated_at: string;
 
@@ -13,8 +13,13 @@ export type ItemsTable = {
   location_description: string;
 };
 
-export type ItemWithParent = ItemsTable & {
+export type ItemWithParent = Item & {
   parent_item_name: string | null;
+};
+
+export type ItemWithPath = Item & {
+  depth: number;
+  path: string[];
 };
 
 export type SelectOptions = { label: string; value: string }[];

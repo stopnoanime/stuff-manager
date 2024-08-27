@@ -3,8 +3,8 @@ import Link from "next/link";
 export default function Menu() {
   const links = [
     { href: "/dashboard", text: "Dashboard" },
-    { href: "/todo", text: "Item hierarchy" },
     { href: "/dashboard/items", text: "All items" },
+    { href: "/dashboard/hierarchy", text: "Item hierarchy" },
   ];
 
   return (
