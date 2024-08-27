@@ -32,11 +32,18 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
 
       <div
         className={
-          "col-start-2 row-span-3 textarea" +
+          "col-start-2 row-span-4 textarea" +
           placeholderColor(item.location_description)
         }
       >
         {item.location_description || "Item Location Description"}
+      </div>
+
+      <div>
+        Favorite
+        <div className={"styled-input"}>
+          {item.is_favorite ? "True" : "False"}
+        </div>
       </div>
 
       <div>

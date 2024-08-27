@@ -100,8 +100,8 @@ export async function createItem(
     const image_url = await uploadItemImage(d.image);
 
     await sql`
-      INSERT INTO items (updated_at, parent_item_id, name, category, image_url, description, location_description)
-      VALUES (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${image_url}, ${d.description}, ${d.location_description})
+      INSERT INTO items (updated_at, parent_item_id, name, category, image_url, description, location_description, is_favorite)
+      VALUES (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${image_url}, ${d.description}, ${d.location_description}, ${d.is_favorite})
     `;
   } catch (err) {
     return {
@@ -139,8 +139,8 @@ export async function editItem(
 
     await sql`
       UPDATE items 
-      SET (updated_at, parent_item_id, name, category, image_url, description, location_description) =
-      (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${new_image_url}, ${d.description}, ${d.location_description})
+      SET (updated_at, parent_item_id, name, category, image_url, description, location_description, is_favorite) =
+      (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${new_image_url}, ${d.description}, ${d.location_description}, ${d.is_favorite})
       WHERE items.id = ${id};
     `;
 

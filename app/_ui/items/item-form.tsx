@@ -75,10 +75,35 @@ export default function ItemForm({
 
       <textarea
         name="location_description"
-        className="col-start-2 row-span-3 textarea"
+        className="col-start-2 row-span-4 textarea"
         defaultValue={defaultValue?.location_description}
         placeholder="Item Location Description"
       />
+
+      <fieldset>
+        <legend>Favorite</legend>
+
+        <div className="styled-input flex justify-evenly">
+          <label className="flex items-center gap-1">
+            <input
+              type="radio"
+              name="is_favorite"
+              value="true"
+              defaultChecked={defaultValue?.is_favorite}
+            />
+            True
+          </label>
+          <label className="flex items-center gap-1">
+            <input
+              type="radio"
+              name="is_favorite"
+              value="false"
+              defaultChecked={!defaultValue?.is_favorite}
+            />
+            False
+          </label>
+        </div>
+      </fieldset>
 
       <label>
         Category

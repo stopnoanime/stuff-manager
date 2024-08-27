@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import {
+  DashboardStatistics,
   Item,
   ItemWithParent,
   ItemWithPath,
@@ -91,6 +92,43 @@ export async function fetchAllRootItems() {
     SELECT *
     FROM items 
     WHERE parent_item_id IS NULL
+    ORDER BY lower(name);
+  `;
+
+  return data.rows;
+}
+
+export async function fetchDashboardStatistics() {
+  const data = await sql<DashboardStatistics>`
+    SELECT  (
+      SELECT COUNT(*)
+      FROM items
+    ) AS item_count,
+    (
+      SELECT COUNT(DISTINCT category) 
+      FROM items 
+      WHERE category <> ''
+    ) AS category_count,
+    (
+      SELECT COUNT(*) 
+      FROM items 
+      WHERE image_url <> ''
+    ) AS image_count,
+    (
+      SELECT COUNT(*) 
+      FROM items 
+      WHERE is_favorite IS TRUE
+    ) AS favorite_count;
+  `;
+
+  return data.rows[0];
+}
+
+export async function fetchAllFavoriteItems() {
+  const data = await sql<Item>`
+    SELECT *
+    FROM items 
+    WHERE is_favorite IS TRUE
     ORDER BY lower(name);
   `;
 

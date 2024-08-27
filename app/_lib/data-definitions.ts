@@ -11,6 +11,7 @@ export type Item = {
   image_url: string;
   description: string;
   location_description: string;
+  is_favorite: boolean;
 };
 
 export type ItemWithParent = Item & {
@@ -23,6 +24,13 @@ export type ItemWithPath = Item & {
 };
 
 export type SelectOptions = { label: string; value: string }[];
+
+export type DashboardStatistics = {
+  item_count: string;
+  category_count: string;
+  image_count: string;
+  favorite_count: string;
+};
 
 export const ALLOWED_IMAGE_TYPES = [
   "image/jpeg",
@@ -47,4 +55,5 @@ export const ItemFormSchema = z.object({
   delete_image: z.enum(["", "true"]),
   description: z.string(),
   location_description: z.string(),
+  is_favorite: z.enum(["true", "false"]),
 });

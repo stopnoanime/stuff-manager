@@ -19,7 +19,7 @@ export default async function Page() {
   return (
     <div
       className="max-w-[70vw] mx-auto grid gap-12"
-      style={{ gridTemplateColumns: "1fr 1fr" }}
+      style={{ gridTemplateColumns: "1fr 2fr" }}
     >
       <div>
         <h1 className="text-2xl font-light mb-6 -ml-12">Item hierarchy</h1>

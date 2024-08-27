@@ -11,6 +11,7 @@ export default function ItemsList({ items }: { items: Item[] }) {
           <th>Name</th>
           <th>Category</th>
           <th>Description</th>
+          <th>Favorite</th>
           <th>Image</th>
         </tr>
       </thead>
@@ -24,6 +25,7 @@ export default function ItemsList({ items }: { items: Item[] }) {
             </td>
             <td>{item.category || "-"}</td>
             <td>{item.description || "-"}</td>
+            <td>{item.is_favorite ? "True" : "-"}</td>
             <td>
               <div className="relative h-full">
                 <Image
@@ -39,7 +41,7 @@ export default function ItemsList({ items }: { items: Item[] }) {
         ))}
         {!items.length && (
           <tr>
-            <td colSpan={4} className="font-light text-lg !pt-6">
+            <td colSpan={5} className="font-light text-lg !pt-6">
               No Items
             </td>
           </tr>
