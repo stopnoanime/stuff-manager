@@ -1,3 +1,4 @@
+import "server-only";
 import { sql } from "@vercel/postgres";
 import {
   DashboardStatistics,
