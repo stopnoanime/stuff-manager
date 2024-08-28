@@ -3,7 +3,7 @@ import ItemCard from "../item-card";
 
 export default function ItemsGrid({ items }: { items: Item[] }) {
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-8">
       {items.map((item) => (
         <ItemCard key={item.id} item={item}></ItemCard>
       ))}

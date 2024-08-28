@@ -3,6 +3,7 @@ import { z } from "zod";
 export type Item = {
   id: string;
   updated_at: string;
+  user_id: string;
 
   parent_item_id: string | null;
 

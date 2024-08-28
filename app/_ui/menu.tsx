@@ -1,3 +1,4 @@
+import { signOut } from "@/auth";
 import Link from "next/link";
 
 export default function Menu() {
@@ -9,9 +10,12 @@ export default function Menu() {
 
   return (
     <div className="flex flex-col border-stone-900 border-solid border-r h-full w-48">
-      <div className="bg-stone-900 text-stone-50 text-2xl font-light p-4">
+      <Link
+        className="bg-stone-900 text-stone-50 text-2xl font-light p-4"
+        href="/"
+      >
         Stuff
-      </div>
+      </Link>
 
       {links.map((l) => (
         <Link
@@ -23,9 +27,15 @@ export default function Menu() {
         </Link>
       ))}
 
-      <div className="mt-auto font-light p-4 border-t border-stone-900">
-        Sign Out
-      </div>
+      <form
+        className="mt-auto font-light p-4 border-t border-stone-900"
+        action={async () => {
+          "use server";
+          await signOut({ redirectTo: "/" });
+        }}
+      >
+        <button type="submit">Sign Out</button>
+      </form>
     </div>
   );
 }

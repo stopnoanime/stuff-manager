@@ -9,8 +9,9 @@ import {
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
-import { ItemFormSchema } from "./data-definitions";
+import { Item, ItemFormSchema } from "./data-definitions";
 import { ItemDeleteState } from "../_ui/items/item-delete";
+import { auth } from "@/auth";
 
 const s3Client = new S3Client({
   region: process.env.S3_REGION,
@@ -38,14 +39,13 @@ function revalidateAndRedirectItems(): never {
   redirect("/dashboard/items");
 }
 
-async function getItemImageURL(id: string) {
-  const data = await sql<{
-    image_url: string;
-  }>`SELECT image_url FROM items WHERE items.id = ${id}`;
+async function getItemAndValidateUserId(id: string, user_id?: string) {
+  const data =
+    await sql<Item>`SELECT * FROM items WHERE id = ${id} AND user_id = ${user_id};`;
 
-  if (data.rowCount !== 1) throw new Error("Invalid item id.");
+  if (data.rowCount !== 1) throw new Error("Invalid item or user id.");
 
-  return data.rows[0].image_url;
+  return data.rows[0];
 }
 
 async function deleteItemImage(image_url: string) {
@@ -81,6 +81,9 @@ export async function createItem(
   prevState: ItemFormState,
   formData: FormData,
 ): Promise<ItemFormState> {
+  const session = await auth();
+  if (!session?.user) redirect("/");
+
   const validatedForm = ItemFormSchema.safeParse(
     Object.fromEntries(formData.entries()),
   );
@@ -100,8 +103,8 @@ export async function createItem(
     const image_url = await uploadItemImage(d.image);
 
     await sql`
-      INSERT INTO items (updated_at, parent_item_id, name, category, image_url, description, location_description, is_favorite)
-      VALUES (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${image_url}, ${d.description}, ${d.location_description}, ${d.is_favorite})
+      INSERT INTO items (updated_at, user_id, parent_item_id, name, category, image_url, description, location_description, is_favorite)
+      VALUES (${new Date().toISOString()}, ${session.user.id}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${image_url}, ${d.description}, ${d.location_description}, ${d.is_favorite});
     `;
   } catch (err) {
     return {
@@ -117,6 +120,9 @@ export async function editItem(
   prevState: ItemFormState,
   formData: FormData,
 ): Promise<ItemFormState> {
+  const session = await auth();
+  if (!session?.user) redirect("/");
+
   const validatedForm = ItemFormSchema.safeParse(
     Object.fromEntries(formData.entries()),
   );
@@ -133,18 +139,20 @@ export async function editItem(
 
     if (d.parent_item_id === "") d.parent_item_id = null;
 
-    const old_image_url = await getItemImageURL(id);
+    const oldItem = await getItemAndValidateUserId(id, session.user.id);
+
     const new_image_url =
-      (await uploadItemImage(d.image)) || (d.delete_image ? "" : old_image_url);
+      (await uploadItemImage(d.image)) ||
+      (d.delete_image ? "" : oldItem.image_url);
 
     await sql`
       UPDATE items 
       SET (updated_at, parent_item_id, name, category, image_url, description, location_description, is_favorite) =
       (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${new_image_url}, ${d.description}, ${d.location_description}, ${d.is_favorite})
-      WHERE items.id = ${id};
+      WHERE id = ${id};
     `;
 
-    if (old_image_url !== new_image_url) deleteItemImage(old_image_url);
+    if (oldItem.image_url !== new_image_url) deleteItemImage(oldItem.image_url);
   } catch (err) {
     return {
       message: "Internal server error. Could not edit item.",
@@ -155,12 +163,15 @@ export async function editItem(
 }
 
 export async function deleteItem(id: string): Promise<ItemDeleteState> {
+  const session = await auth();
+  if (!session?.user) redirect("/");
+
   try {
-    const image_url = await getItemImageURL(id);
+    const itemData = await getItemAndValidateUserId(id, session.user.id);
 
-    await sql`DELETE FROM items WHERE items.id = ${id}`;
+    await sql`DELETE FROM items WHERE id = ${id};`;
 
-    await deleteItemImage(image_url);
+    await deleteItemImage(itemData.image_url);
   } catch (err) {
     return {
       message: "Internal server error. Could not delete item.",

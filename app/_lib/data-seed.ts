@@ -6,6 +6,7 @@ export async function seedItems() {
       CREATE TABLE IF NOT EXISTS items (
         id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
         updated_at TIMESTAMPTZ NOT NULL,
+        user_id UUID NOT NULL,
 
         parent_item_id UUID REFERENCES items(id) ON DELETE SET NULL,
 
