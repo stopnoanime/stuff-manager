@@ -6,6 +6,7 @@ import CreatableSelect from "react-select/creatable";
 import Select, { StylesConfig } from "react-select";
 import { SelectOptions } from "@/app/_lib/data-definitions";
 import ImageInput from "./image-input";
+import { QRCodeInput } from "../qrcode/qrcode-input";
 
 export type ItemFormState = {
   errors?: {
@@ -75,7 +76,7 @@ export default function ItemForm({
 
       <textarea
         name="location_description"
-        className="col-start-2 row-span-4 textarea"
+        className="col-start-2 row-span-5 textarea"
         defaultValue={defaultValue?.location_description}
         placeholder="Item Location Description"
       />
@@ -130,6 +131,8 @@ export default function ItemForm({
           options={otherItems}
         />
       </label>
+
+      <QRCodeInput default_qr_code={defaultValue?.qr_code} />
 
       <div className="col-span-2 text-sm text-red-500">
         {actionState?.message && <p>{actionState.message}</p>}

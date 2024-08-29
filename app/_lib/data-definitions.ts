@@ -13,6 +13,7 @@ export type Item = {
   description: string;
   location_description: string;
   is_favorite: boolean;
+  qr_code: string;
 };
 
 export type ItemWithParent = Item & {
@@ -57,4 +58,5 @@ export const ItemFormSchema = z.object({
   description: z.string(),
   location_description: z.string(),
   is_favorite: z.enum(["true", "false"]),
+  qr_code: z.string(),
 });

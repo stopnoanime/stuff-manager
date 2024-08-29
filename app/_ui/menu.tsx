@@ -5,6 +5,7 @@ export default function Menu() {
   const links = [
     { href: "/dashboard", text: "Dashboard" },
     { href: "/dashboard/items", text: "All items" },
+    { href: "/dashboard/scanner", text: "QR scanner" },
     { href: "/dashboard/hierarchy", text: "Item hierarchy" },
   ];
 

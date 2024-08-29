@@ -2,9 +2,10 @@ import { ItemWithParent } from "@/app/_lib/data-definitions";
 import Image from "next/image";
 import noImage from "@/public/no-image.png";
 import Link from "next/link";
+import QRCodeDisplay from "../qrcode/qrcode-display";
 
 export default function ItemDisplay({ item }: { item: ItemWithParent }) {
-  const placeholderColor = (v: string | null) => (v ? "" : "  text-stone-400");
+  const placeholderColor = (v: string | null) => (v ? "" : " text-stone-400");
 
   return (
     <div className="grid grid-cols-2 gap-4 item-form">
@@ -63,6 +64,17 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
             >
               {item.parent_item_name}
             </Link>
+          ) : (
+            "None"
+          )}
+        </div>
+      </div>
+
+      <div className="col-span-2">
+        QR code
+        <div className={"styled-input" + placeholderColor(item.qr_code)}>
+          {item.qr_code ? (
+            <QRCodeDisplay qr_code={item.qr_code}></QRCodeDisplay>
           ) : (
             "None"
           )}

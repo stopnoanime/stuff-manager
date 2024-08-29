@@ -157,3 +157,16 @@ export async function fetchAllFavoriteItems() {
 
   return data.rows;
 }
+
+export async function fetchItemsByQRCode(qr_code: string) {
+  const user = await getUser();
+
+  const data = await sql<ItemWithParent>`
+    SELECT *
+    FROM items
+    WHERE qr_code = ${qr_code} AND user_id = ${user.id}
+    ORDER BY lower(name);
+  `;
+
+  return data.rows;
+}

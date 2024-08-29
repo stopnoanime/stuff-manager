@@ -34,8 +34,10 @@ export async function createItem(
     const image_url = await uploadItemImage(d.image);
 
     await sql`
-      INSERT INTO items (updated_at, user_id, parent_item_id, name, category, image_url, description, location_description, is_favorite)
-      VALUES (${new Date().toISOString()}, ${user.id}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${image_url}, ${d.description}, ${d.location_description}, ${d.is_favorite});
+      INSERT INTO items 
+      (updated_at, user_id, parent_item_id, name, category, image_url, description, location_description, is_favorite, qr_code)
+      VALUES 
+      (${new Date().toISOString()}, ${user.id}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${image_url}, ${d.description}, ${d.location_description}, ${d.is_favorite}, ${d.qr_code});
     `;
   } catch (err) {
     console.log("Error while creating item: " + err);
@@ -77,9 +79,9 @@ export async function editItem(
       (d.delete_image ? "" : oldItem.image_url);
 
     await sql`
-      UPDATE items 
-      SET (updated_at, parent_item_id, name, category, image_url, description, location_description, is_favorite) =
-      (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${new_image_url}, ${d.description}, ${d.location_description}, ${d.is_favorite})
+      UPDATE items SET 
+      (updated_at, parent_item_id, name, category, image_url, description, location_description, is_favorite, qr_code) =
+      (${new Date().toISOString()}, ${d.parent_item_id}, ${d.name}, ${d.category}, ${new_image_url}, ${d.description}, ${d.location_description}, ${d.is_favorite}, ${d.qr_code})
       WHERE id = ${id};
     `;
 

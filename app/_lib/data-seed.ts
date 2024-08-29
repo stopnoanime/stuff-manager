@@ -15,7 +15,8 @@ export async function seedItems() {
         image_url TEXT NOT NULL,
         description TEXT NOT NULL,
         location_description TEXT NOT NULL,
-        is_favorite BOOLEAN NOT NULL
+        is_favorite BOOLEAN NOT NULL,
+        qr_code TEXT NOT NULL
       );
     `;
 }
