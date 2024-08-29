@@ -8,11 +8,10 @@ import {
   SelectOptions,
 } from "./data-definitions";
 import { z } from "zod";
-import { auth } from "@/auth";
+import { getUser } from "./utils";
 
 export async function fetchItem(id: string) {
-  const session = await auth();
-  if (!session?.user) return;
+  const user = await getUser();
 
   if (!z.string().uuid().safeParse(id).success) return undefined;
 
@@ -21,22 +20,21 @@ export async function fetchItem(id: string) {
     FROM items t1
     LEFT JOIN items t2
     ON t1.parent_item_id = t2.id
-    WHERE t1.id = ${id} AND t1.user_id = ${session.user.id};
+    WHERE t1.id = ${id} AND t1.user_id = ${user.id};
   `;
 
   return data.rows[0];
 }
 
 export async function fetchChildItems(id: string) {
-  const session = await auth();
-  if (!session?.user) return [];
+  const user = await getUser();
 
   if (!z.string().uuid().safeParse(id).success) return [];
 
   const data = await sql<Item>`
     SELECT *
     FROM items
-    WHERE parent_item_id = ${id} AND user_id = ${session.user.id}
+    WHERE parent_item_id = ${id} AND user_id = ${user.id}
     ORDER BY lower(name);
   `;
 
@@ -44,13 +42,12 @@ export async function fetchChildItems(id: string) {
 }
 
 export async function fetchAllItems() {
-  const session = await auth();
-  if (!session?.user) return [];
+  const user = await getUser();
 
   const data = await sql<Item>`
     SELECT *
     FROM items
-    WHERE user_id = ${session.user.id}
+    WHERE user_id = ${user.id}
     ORDER BY lower(name);
   `;
 
@@ -58,13 +55,12 @@ export async function fetchAllItems() {
 }
 
 export async function fetchAllItemsAsOptions(): Promise<SelectOptions> {
-  const session = await auth();
-  if (!session?.user) return [];
+  const user = await getUser();
 
   const data = await sql<{ id: string; name: string }>`
     SELECT id, name
     FROM items
-    WHERE user_id = ${session.user.id}
+    WHERE user_id = ${user.id}
     ORDER BY lower(name);
   `;
 
@@ -72,13 +68,12 @@ export async function fetchAllItemsAsOptions(): Promise<SelectOptions> {
 }
 
 export async function fetchAllCategories() {
-  const session = await auth();
-  if (!session?.user) return [];
+  const user = await getUser();
 
   const data = await sql<{ category: string }>`
     SELECT *
     FROM (
-      SELECT DISTINCT category FROM items WHERE category <> '' AND user_id = ${session.user.id}
+      SELECT DISTINCT category FROM items WHERE category <> '' AND user_id = ${user.id}
       UNION
       SELECT DISTINCT category FROM predefined_categories
     )
@@ -89,13 +84,12 @@ export async function fetchAllCategories() {
 }
 
 export async function fetchAllItemsAsTree() {
-  const session = await auth();
-  if (!session?.user) return [];
+  const user = await getUser();
 
   const data = await sql<ItemWithPath>`
     WITH RECURSIVE items_tree AS (
         SELECT *, ARRAY[id] AS path
-        FROM items WHERE parent_item_id IS NULL AND user_id = ${session.user.id}
+        FROM items WHERE parent_item_id IS NULL AND user_id = ${user.id}
       UNION
         SELECT t.*, items_tree.path || t.id
         FROM items t
@@ -110,13 +104,12 @@ export async function fetchAllItemsAsTree() {
 }
 
 export async function fetchAllRootItems() {
-  const session = await auth();
-  if (!session?.user) return [];
+  const user = await getUser();
 
   const data = await sql<Item>`
     SELECT *
     FROM items 
-    WHERE parent_item_id IS NULL AND user_id = ${session.user.id}
+    WHERE parent_item_id IS NULL AND user_id = ${user.id}
     ORDER BY lower(name);
   `;
 
@@ -124,29 +117,28 @@ export async function fetchAllRootItems() {
 }
 
 export async function fetchDashboardStatistics() {
-  const session = await auth();
-  if (!session?.user) return [];
+  const user = await getUser();
 
   const data = await sql<DashboardStatistics>`
     SELECT  (
       SELECT COUNT(*)
       FROM items
-      WHERE user_id = ${session.user.id}
+      WHERE user_id = ${user.id}
     ) AS item_count,
     (
       SELECT COUNT(DISTINCT category) 
       FROM items 
-      WHERE category <> '' AND user_id = ${session.user.id}
+      WHERE category <> '' AND user_id = ${user.id}
     ) AS category_count,
     (
       SELECT COUNT(*) 
       FROM items 
-      WHERE image_url <> '' AND user_id = ${session.user.id}
+      WHERE image_url <> '' AND user_id = ${user.id}
     ) AS image_count,
     (
       SELECT COUNT(*) 
       FROM items 
-      WHERE is_favorite IS TRUE AND user_id = ${session.user.id}
+      WHERE is_favorite IS TRUE AND user_id = ${user.id}
     ) AS favorite_count;
   `;
 
@@ -154,13 +146,12 @@ export async function fetchDashboardStatistics() {
 }
 
 export async function fetchAllFavoriteItems() {
-  const session = await auth();
-  if (!session?.user) return [];
+  const user = await getUser();
 
   const data = await sql<Item>`
     SELECT *
     FROM items 
-    WHERE is_favorite IS TRUE AND user_id = ${session.user.id}
+    WHERE is_favorite IS TRUE AND user_id = ${user.id}
     ORDER BY lower(name);
   `;
 
