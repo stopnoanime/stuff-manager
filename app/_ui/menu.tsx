@@ -1,13 +1,24 @@
-import { signOut } from "@/auth";
+"use client";
+
+import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { useSelectedLayoutSegment } from "next/navigation";
+
+const links = [
+  { text: "Dashboard", segment: "" },
+  { text: "All items", segment: "items" },
+  { text: "QR scanner", segment: "scanner" },
+  { text: "Item hierarchy", segment: "hierarchy" },
+];
 
 export default function Menu() {
-  const links = [
-    { href: "/dashboard", text: "Dashboard" },
-    { href: "/dashboard/items", text: "All items" },
-    { href: "/dashboard/scanner", text: "QR scanner" },
-    { href: "/dashboard/hierarchy", text: "Item hierarchy" },
-  ];
+  const segment = useSelectedLayoutSegment();
+
+  function isSelected(linkSegment: string, currentSegment: string | null) {
+    if (linkSegment == "" && currentSegment == null) return true;
+
+    return linkSegment == currentSegment;
+  }
 
   return (
     <div className="flex flex-col border-stone-900 border-solid border-r h-full w-48">
@@ -20,23 +31,23 @@ export default function Menu() {
 
       {links.map((l) => (
         <Link
-          className="text-lg font-light p-4 border-b border-stone-900"
-          key={l.href}
-          href={l.href}
+          className={
+            "text-lg font-light p-4 border-b border-stone-900 " +
+            (isSelected(l.segment, segment) ? "font-normal" : "")
+          }
+          key={l.segment}
+          href={"/dashboard/" + l.segment}
         >
           {l.text}
         </Link>
       ))}
 
-      <form
-        className="mt-auto font-light p-4 border-t border-stone-900"
-        action={async () => {
-          "use server";
-          await signOut({ redirectTo: "/" });
-        }}
+      <button
+        className="mt-auto font-light p-4 border-t border-stone-900 text-left"
+        onClick={() => signOut()}
       >
-        <button type="submit">Sign Out</button>
-      </form>
+        Sign Out
+      </button>
     </div>
   );
 }
