@@ -2,16 +2,16 @@
 
 import { BrowserMultiFormatReader, IScannerControls } from "@zxing/browser";
 import { useEffect, useRef, useState } from "react";
+import noCamera from "@/public/no-camera.png";
 
 export default function QRCodeScanner({
-  onChange,
+  onScan,
 }: {
-  onChange: (s: string) => void;
+  onScan: (s: string) => void;
 }) {
   const [inputList, setInputList] = useState<MediaDeviceInfo[]>([]);
   const [selectedInput, setSelectedInput] = useState("");
   const [isDecoding, setIsDecoding] = useState(false);
-  const [wasDecoded, setWasDecoded] = useState(false);
 
   const readerRef = useRef(new BrowserMultiFormatReader());
   const controlsRef = useRef<IScannerControls>();
@@ -25,14 +25,11 @@ export default function QRCodeScanner({
         if (!res) return;
 
         stopVideo();
-        setWasDecoded(true);
-        onChange(res.getText());
+        onScan(res.getText());
       },
     );
 
     setIsDecoding(true);
-    setWasDecoded(false);
-    onChange("");
   }
 
   function stopVideo() {
@@ -54,11 +51,10 @@ export default function QRCodeScanner({
   return (
     <div className="flex flex-col items-center">
       <video
-        className={"aspect-video mb-2 w-[25vw] " + (isDecoding ? "" : "hidden")}
+        className="aspect-video mb-2 w-[30vw]"
+        poster={noCamera.src}
         ref={videoRef}
       ></video>
-
-      {wasDecoded && <div className="mb-2">Successfully scanned QR code.</div>}
 
       <div className="flex w-full">
         <button

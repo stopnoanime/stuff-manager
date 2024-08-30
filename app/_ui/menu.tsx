@@ -7,7 +7,6 @@ import { useSelectedLayoutSegment } from "next/navigation";
 const links = [
   { text: "Dashboard", segment: "" },
   { text: "All items", segment: "items" },
-  { text: "QR scanner", segment: "scanner" },
   { text: "Item hierarchy", segment: "hierarchy" },
 ];
 

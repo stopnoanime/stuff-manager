@@ -1,8 +1,8 @@
 "use client";
 
 import { ChangeEvent, useState } from "react";
-import QRCodeScanner from "./qrcode-scanner";
 import QRCodeDisplay from "./qrcode-display";
+import QRCodeScannerPopup from "./qrcode-scanner-popup";
 
 type ActionType = "none" | "generate" | "scan";
 export function QRCodeInput({ default_qr_code }: { default_qr_code?: string }) {
@@ -10,15 +10,25 @@ export function QRCodeInput({ default_qr_code }: { default_qr_code?: string }) {
     default_qr_code ? "generate" : "none",
   );
   const [qr_code, set_qr_code] = useState(default_qr_code || "");
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [usingScanned, setUsingScanned] = useState(false);
 
   function onActionChange(e: ChangeEvent<HTMLInputElement>) {
     const action = e.target.value as ActionType;
     setAction(action);
 
-    if (action == "none" || action == "scan") set_qr_code("");
+    set_qr_code(
+      action == "generate" ? default_qr_code || crypto.randomUUID() : "",
+    );
 
-    if (action == "generate")
-      set_qr_code(default_qr_code || crypto.randomUUID());
+    setUsingScanned(false);
+    if (action == "scan") setPopupOpen(true);
+  }
+
+  function handleQrCodeScan(qr_code: string) {
+    setPopupOpen(false);
+    setUsingScanned(true);
+    set_qr_code(qr_code);
   }
 
   return (
@@ -45,9 +55,9 @@ export function QRCodeInput({ default_qr_code }: { default_qr_code?: string }) {
               checked={action == "generate"}
               onChange={onActionChange}
             />
-            {default_qr_code ? "Keep" : "Generate"}
+            {default_qr_code ? "Keep previous" : "Generate new"}
           </label>
-          <label className="flex items-center gap-1">
+          <label className="flex items-center gap-1 w-32 justify-center">
             <input
               type="radio"
               name="qr-type"
@@ -55,7 +65,7 @@ export function QRCodeInput({ default_qr_code }: { default_qr_code?: string }) {
               checked={action == "scan"}
               onChange={onActionChange}
             />
-            Scan
+            {usingScanned ? "Use scanned" : "Scan"}
           </label>
         </div>
       </fieldset>
@@ -68,10 +78,11 @@ export function QRCodeInput({ default_qr_code }: { default_qr_code?: string }) {
         </div>
       )}
 
-      {action == "scan" && (
-        <div className="col-span-2 default-border p-2">
-          <QRCodeScanner onChange={set_qr_code}></QRCodeScanner>
-        </div>
+      {popupOpen && (
+        <QRCodeScannerPopup
+          onScan={handleQrCodeScan}
+          onClose={() => setPopupOpen(false)}
+        ></QRCodeScannerPopup>
       )}
     </>
   );

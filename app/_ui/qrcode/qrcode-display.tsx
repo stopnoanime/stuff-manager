@@ -15,7 +15,7 @@ export default function QRCodeDisplay({ qr_code }: { qr_code: string }) {
     <div className="flex flex-col items-center">
       {imgSrc && (
         <>
-          <img src={imgSrc}></img>
+          <img src={imgSrc} alt="The QR code"></img>
           <a
             href={imgSrc}
             download="qr-code"

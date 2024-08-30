@@ -1,4 +1,4 @@
-import { fetchItemsByQuery } from "@/app/_lib/data-fetches";
+import { fetchItemsByQRCode, fetchItemsByQuery } from "@/app/_lib/data-fetches";
 import ItemsList from "@/app/_ui/items/items-list";
 import { redirect } from "next/navigation";
 
@@ -7,10 +7,15 @@ export default async function Page({
 }: {
   searchParams?: {
     query?: string;
+    qr_code?: string;
   };
 }) {
   const query = searchParams?.query || "";
-  const items = await fetchItemsByQuery(query);
+  const qr_code = searchParams?.qr_code || "";
+
+  const items = await (qr_code
+    ? fetchItemsByQRCode(qr_code)
+    : fetchItemsByQuery(query));
 
   if (items.length === 1) redirect("/dashboard/items/" + items[0].id);
 
