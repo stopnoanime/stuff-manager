@@ -14,7 +14,7 @@ export default async function Page() {
   return (
     <div>
       <div className="flex justify-between text-2xl font-light mb-6">
-        <h1>All Items</h1>
+        <h1>All items</h1>
         <Link className="link" href={`/dashboard/items/create`}>
           Create item
         </Link>

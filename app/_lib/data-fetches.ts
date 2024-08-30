@@ -170,3 +170,15 @@ export async function fetchItemsByQRCode(qr_code: string) {
 
   return data.rows;
 }
+
+export async function fetchItemsByQuery(query: string) {
+  const user = await getUser();
+
+  const data = await sql<ItemWithParent>`
+    SELECT *
+    FROM items
+    WHERE user_id = ${user.id} AND (name || category || description || location_description) @@ ${query};
+  `;
+
+  return data.rows;
+}

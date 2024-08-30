@@ -39,7 +39,8 @@ body {
   @apply outline-slate-900 focus:outline outline-2;
 }
 
-.textarea::placeholder {
+.textarea::placeholder,
+.styled-input::placeholder {
   @apply text-stone-400 opacity-100;
 }
 
