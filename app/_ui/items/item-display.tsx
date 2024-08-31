@@ -33,7 +33,7 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
 
       <div
         className={
-          "col-start-2 row-span-4 textarea" +
+          "col-start-2 row-span-5 textarea" +
           placeholderColor(item.location_description)
         }
       >
@@ -70,15 +70,9 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
         </div>
       </div>
 
-      <div className="col-span-2">
+      <div>
         QR code
-        <div className={"styled-input" + placeholderColor(item.qr_code)}>
-          {item.qr_code ? (
-            <QRCodeDisplay qr_code={item.qr_code}></QRCodeDisplay>
-          ) : (
-            "None"
-          )}
-        </div>
+        <QRCodeDisplay qr_code={item.qr_code}></QRCodeDisplay>
       </div>
     </div>
   );

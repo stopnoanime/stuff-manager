@@ -7,24 +7,21 @@ export default function QRCodeDisplay({ qr_code }: { qr_code: string }) {
 
   useEffect(() => {
     (async () => {
-      setImgSrc(await QRCode.toDataURL(qr_code));
+      if (qr_code) setImgSrc(await QRCode.toDataURL(qr_code));
     })();
   }, [qr_code]);
 
   return (
-    <div className="flex flex-col items-center">
-      {imgSrc && (
+    <div className="flex items-center justify-center gap-4 styled-input">
+      {qr_code && imgSrc && (
         <>
-          <img src={imgSrc} alt="The QR code"></img>
-          <a
-            href={imgSrc}
-            download="qr-code"
-            className="styled-input text-center mt-2"
-          >
+          <img src={imgSrc} height="64" width="64" alt="The qr code"></img>
+          <a href={imgSrc} download="qr-code" className="styled-input !w-auto">
             Download
           </a>
         </>
       )}
+      {!qr_code && <div className="text-left w-full text-stone-400">None</div>}
     </div>
   );
 }
