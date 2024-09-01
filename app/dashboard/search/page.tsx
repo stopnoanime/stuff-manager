@@ -1,6 +1,11 @@
 import { fetchItemsByQRCode, fetchItemsByQuery } from "@/app/_lib/data-fetches";
 import ItemsList from "@/app/_ui/items/items-list";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Search results",
+};
 
 export default async function Page({
   searchParams,
