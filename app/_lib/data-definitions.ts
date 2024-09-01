@@ -34,6 +34,11 @@ export type DashboardStatistics = {
   favorite_count: string;
 };
 
+export type AutocompleteItem = {
+  name: string;
+  id: string;
+};
+
 export const ALLOWED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",

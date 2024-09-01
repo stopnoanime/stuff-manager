@@ -1,6 +1,7 @@
 import "server-only";
 import { sql } from "@vercel/postgres";
 import {
+  AutocompleteItem,
   DashboardStatistics,
   Item,
   ItemWithParent,
@@ -178,6 +179,19 @@ export async function fetchItemsByQuery(query: string) {
     SELECT *
     FROM items
     WHERE user_id = ${user.id} AND (name || category || description || location_description) @@ ${query};
+  `;
+
+  return data.rows;
+}
+
+export async function fetchAutocompleteItemsByQuery(query: string) {
+  const user = await getUser();
+
+  const data = await sql<AutocompleteItem>`
+    SELECT name, id
+    FROM items
+    WHERE user_id = ${user.id} AND (name || category || description || location_description) @@ ${query}
+    LIMIT 10;
   `;
 
   return data.rows;
