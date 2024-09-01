@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, Suspense, useRef, useState } from "react";
 import QRCodeScannerPopup from "./qrcode/qrcode-scanner-popup";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AutocompleteItem } from "../_lib/data-definitions";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useOutsideClick } from "../_lib/hooks";
 import { useDebouncedCallback } from "use-debounce";
 
-export default function SearchBar() {
+function SearchBarNoSuspense() {
   const [popupOpen, setPopupOpen] = useState(false);
 
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
@@ -108,5 +108,13 @@ export default function SearchBar() {
         ></QRCodeScannerPopup>
       )}
     </>
+  );
+}
+
+export default function SearchBar() {
+  return (
+    <Suspense>
+      <SearchBarNoSuspense />
+    </Suspense>
   );
 }
