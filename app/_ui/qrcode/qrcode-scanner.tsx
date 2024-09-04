@@ -49,9 +49,9 @@ export default function QRCodeScanner({
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center  overflow-auto">
       <video
-        className="aspect-video mb-2 w-[30vw]"
+        className="aspect-video mb-2 min-w-80 w-[30vw]"
         poster={noCamera.src}
         ref={videoRef}
       ></video>
@@ -65,7 +65,7 @@ export default function QRCodeScanner({
           {isDecoding ? "Stop scanning" : "Start scanning"}
         </button>
 
-        <div className=" styled-input !w-auto !border-l-0">
+        <div className=" styled-input !w-auto !border-l-0 flex items-center">
           <select
             value={selectedInput}
             onChange={(e) => setSelectedInput(e.target.value)}
