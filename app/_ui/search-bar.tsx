@@ -7,6 +7,8 @@ import { AutocompleteItem } from "../_lib/data-definitions";
 import Link from "next/link";
 import { useOutsideClick } from "../_lib/hooks";
 import { useDebouncedCallback } from "use-debounce";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass, faQrcode } from "@fortawesome/free-solid-svg-icons";
 
 function SearchBarNoSuspense() {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -60,11 +62,11 @@ function SearchBarNoSuspense() {
         onSubmit={handleSearch}
         onFocus={() => setAutocompleteOpen(true)}
       >
-        <div className="relative" ref={wrapperRef}>
+        <div className="relative w-full md:!w-[50vw]" ref={wrapperRef}>
           <input
             name="query"
             placeholder="Search for items"
-            className="styled-input !w-[50vw] h-full"
+            className="styled-input h-full"
             onChange={(e) => debouncedInputChange(e.target.value)}
             defaultValue={searchParams.get("query")?.toString()}
           ></input>
@@ -89,7 +91,11 @@ function SearchBarNoSuspense() {
         </div>
 
         <button type="submit" className="styled-input !w-auto !border-l-0">
-          Search
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            className="md:!hidden mx-2"
+          />
+          <div className="hidden md:block"> Search</div>
         </button>
 
         <button
@@ -97,7 +103,8 @@ function SearchBarNoSuspense() {
           className="styled-input !w-auto !border-l-0"
           onClick={() => setPopupOpen(true)}
         >
-          QR search
+          <FontAwesomeIcon icon={faQrcode} className="md:!hidden" />
+          <div className="hidden md:block"> QR search</div>
         </button>
       </form>
 

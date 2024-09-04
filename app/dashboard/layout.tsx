@@ -1,14 +1,16 @@
-import Menu from "../_ui/menu";
+import Menu from "../_ui/menu/menu";
 import SearchBar from "../_ui/search-bar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid h-screen [grid-template:'menu_search'auto'menu_main'1fr/auto_1fr]">
-      <div className="[grid-area:menu]">
+    <div className="grid min-h-screen md:h-screen [grid-template:'menu'auto'search'auto'main'1fr] md:[grid-template:'menu_search'auto'menu_main'1fr/auto_1fr]">
+      <div className="[grid-area:menu] overflow-hidden">
         <Menu />
       </div>
-      <SearchBar />
-      <main className="p-6 overflow-auto">{children}</main>
+      <div className="[grid-area:search]">
+        <SearchBar />
+      </div>
+      <main className="[grid-area:main] p-6 overflow-auto">{children}</main>
     </div>
   );
 }
