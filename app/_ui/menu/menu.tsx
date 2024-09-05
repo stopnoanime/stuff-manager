@@ -35,7 +35,7 @@ export default function Menu() {
 
       <div className="grow min-w-2 min-h-2"></div>
       <MenuButton
-        text="Sign Out"
+        text="Sign out"
         icon={faPowerOff}
         onClick={signOut}
         isLast

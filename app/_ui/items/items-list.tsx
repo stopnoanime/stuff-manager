@@ -9,10 +9,10 @@ export default function ItemsList({ items }: { items: Item[] }) {
       <thead>
         <tr>
           <th>Name</th>
+          <th>Image</th>
           <th>Category</th>
           <th>Description</th>
           <th>Favorite</th>
-          <th>Image</th>
         </tr>
       </thead>
       <tbody>
@@ -23,9 +23,6 @@ export default function ItemsList({ items }: { items: Item[] }) {
                 {item.name}
               </Link>
             </td>
-            <td>{item.category || "-"}</td>
-            <td>{item.description || "-"}</td>
-            <td>{item.is_favorite ? "True" : "-"}</td>
             <td>
               <div className="relative h-full">
                 <Image
@@ -37,6 +34,9 @@ export default function ItemsList({ items }: { items: Item[] }) {
                 />
               </div>
             </td>
+            <td>{item.category || "-"}</td>
+            <td>{item.description || "-"}</td>
+            <td>{item.is_favorite ? "True" : "-"}</td>
           </tr>
         ))}
         {!items.length && (

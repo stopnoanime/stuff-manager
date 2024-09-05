@@ -1,4 +1,4 @@
-import { Item } from "../_lib/data-definitions";
+import { Item } from "../../_lib/data-definitions";
 import Link from "next/link";
 import Image from "next/image";
 import noImage from "@/public/no-image.png";

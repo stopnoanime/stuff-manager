@@ -18,9 +18,8 @@ export default function MenuButton({
   onClick?: () => void;
   isLast?: boolean;
 }) {
-  const isSelected = segment
-    ? segment === (useSelectedLayoutSegment() || "")
-    : false;
+  const currentSegment = useSelectedLayoutSegment() || "";
+  const isSelected = segment === currentSegment;
 
   function LinkOrButton(props: any) {
     const isButton = !!props.onClick;

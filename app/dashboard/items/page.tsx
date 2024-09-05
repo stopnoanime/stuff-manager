@@ -1,8 +1,7 @@
-import { createItem } from "@/app/_lib/data-actions";
 import { fetchAllItems } from "@/app/_lib/data-fetches";
+import PageTemplate from "@/app/_ui/general/page-template";
 import ItemsList from "@/app/_ui/items/items-list";
 import { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "All items",
@@ -12,16 +11,11 @@ export default async function Page() {
   const items = await fetchAllItems();
 
   return (
-    <div>
-      <div className="flex justify-between text-2xl font-light mb-6">
-        <h1>All items</h1>
-        <Link className="link" href={`/dashboard/items/create`}>
-          Create item
-        </Link>
-      </div>
-      <div className="max-w-[70vw] mx-auto">
-        <ItemsList items={items}></ItemsList>
-      </div>
-    </div>
+    <PageTemplate
+      title="All items"
+      links={[{ text: "Create item", href: "/dashboard/items/create" }]}
+    >
+      <ItemsList items={items}></ItemsList>
+    </PageTemplate>
   );
 }

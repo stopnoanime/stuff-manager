@@ -73,7 +73,7 @@ export function QRCodeInput({ default_qr_code }: { default_qr_code?: string }) {
       <input hidden type="text" value={qr_code} readOnly name="qr_code"></input>
 
       {action == "generate" && (
-        <div className="col-span-2">
+        <div className="md:col-span-2">
           <QRCodeDisplay qr_code={qr_code}></QRCodeDisplay>
         </div>
       )}

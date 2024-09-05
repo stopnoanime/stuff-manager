@@ -1,5 +1,5 @@
 import { Item } from "@/app/_lib/data-definitions";
-import ItemCard from "../item-card";
+import ItemCard from "../item/item-card";
 
 export default function ItemsGrid({ items }: { items: Item[] }) {
   return (

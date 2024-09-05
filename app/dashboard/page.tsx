@@ -3,7 +3,9 @@ import {
   fetchAllFavoriteItems,
   fetchDashboardStatistics,
 } from "../_lib/data-fetches";
-import ItemCard from "../_ui/item-card";
+import ItemCard from "../_ui/item/item-card";
+import PageTemplate from "../_ui/general/page-template";
+import QuickStats from "../_ui/dashboard/quick-stats";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -16,32 +18,9 @@ export default async function Page() {
   ]);
 
   return (
-    <div>
-      <h1 className="text-2xl font-light mb-6">Dashboard</h1>
+    <PageTemplate title="Dashboard" fullWidth>
       <div className="flex flex-wrap gap-6 text-lg font-light">
-        <div className="default-border p-4">
-          <h1 className="text-xl mb-2">Quick stats:</h1>
-          <table>
-            <tbody>
-              <tr>
-                <td>Items:</td>
-                <td>{stats.item_count}</td>
-              </tr>
-              <tr>
-                <td>Images:</td>
-                <td>{stats.image_count}</td>
-              </tr>
-              <tr>
-                <td>Favorites:</td>
-                <td>{stats.favorite_count}</td>
-              </tr>
-              <tr>
-                <td className="pr-4">Categories:</td>
-                <td>{stats.category_count}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <QuickStats stats={stats}></QuickStats>
 
         {items.map((item) => (
           <ItemCard key={item.id} item={item}></ItemCard>
@@ -53,6 +32,6 @@ export default async function Page() {
           </div>
         )}
       </div>
-    </div>
+    </PageTemplate>
   );
 }

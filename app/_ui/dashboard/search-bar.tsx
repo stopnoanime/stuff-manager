@@ -1,11 +1,11 @@
 "use client";
 
 import { FormEvent, Suspense, useRef, useState } from "react";
-import QRCodeScannerPopup from "./qrcode/qrcode-scanner-popup";
+import QRCodeScannerPopup from "../qrcode/qrcode-scanner-popup";
 import { useRouter, useSearchParams } from "next/navigation";
-import { AutocompleteItem } from "../_lib/data-definitions";
+import { AutocompleteItem } from "../../_lib/data-definitions";
 import Link from "next/link";
-import { useOutsideClick } from "../_lib/hooks";
+import { useOutsideClick } from "../../_lib/hooks";
 import { useDebouncedCallback } from "use-debounce";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faQrcode } from "@fortawesome/free-solid-svg-icons";

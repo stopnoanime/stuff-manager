@@ -1,5 +1,5 @@
 import Menu from "../_ui/menu/menu";
-import SearchBar from "../_ui/search-bar";
+import SearchBar from "../_ui/dashboard/search-bar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,7 +10,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="[grid-area:search]">
         <SearchBar />
       </div>
-      <main className="[grid-area:main] p-6 overflow-auto">{children}</main>
+      <main className="[grid-area:main] p-2 md:p-6 overflow-auto">
+        {children}
+      </main>
     </div>
   );
 }
