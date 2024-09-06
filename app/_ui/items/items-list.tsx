@@ -1,6 +1,6 @@
 import { Item } from "@/app/_lib/data-definitions";
-import Image from "next/image";
 import noImage from "@/public/no-image.png";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function ItemsList({ items }: { items: Item[] }) {

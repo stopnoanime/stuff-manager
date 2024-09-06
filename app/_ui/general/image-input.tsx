@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { ChangeEvent, useRef, useState, DragEvent } from "react";
-import noImage from "@/public/no-image.png";
 import { ALLOWED_IMAGE_TYPES } from "@/app/_lib/data-definitions";
+import noImage from "@/public/no-image.png";
+import Image from "next/image";
+import { ChangeEvent, DragEvent, useRef, useState } from "react";
 
 export default function ImageInput({
   defaultImage,

@@ -1,12 +1,12 @@
+import {
+  faHouse,
+  faList,
+  faPowerOff,
+  faSitemap,
+} from "@fortawesome/free-solid-svg-icons";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import MenuButton from "./menu-button";
-import {
-  faPowerOff,
-  faHouse,
-  faList,
-  faSitemap,
-} from "@fortawesome/free-solid-svg-icons";
 
 const links = [
   { text: "Dashboard", segment: "", icon: faHouse },

@@ -1,10 +1,9 @@
 "use client";
 
-import { ItemWithParent } from "@/app/_lib/data-definitions";
+import { ItemWithParent, SelectOptions } from "@/app/_lib/data-definitions";
 import { FormEvent, startTransition, useActionState, useId } from "react";
-import CreatableSelect from "react-select/creatable";
 import Select, { StylesConfig } from "react-select";
-import { SelectOptions } from "@/app/_lib/data-definitions";
+import CreatableSelect from "react-select/creatable";
 import ImageInput from "../general/image-input";
 import { QRCodeInput } from "../qrcode/qrcode-input";
 

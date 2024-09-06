@@ -1,8 +1,8 @@
 "use client";
 
+import noCamera from "@/public/no-camera.png";
 import { BrowserMultiFormatReader, IScannerControls } from "@zxing/browser";
 import { useEffect, useRef, useState } from "react";
-import noCamera from "@/public/no-camera.png";
 
 export default function QRCodeScanner({
   onScan,

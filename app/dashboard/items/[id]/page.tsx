@@ -1,10 +1,10 @@
-import { Metadata } from "next";
 import { fetchChildItems, fetchItem } from "@/app/_lib/data-fetches";
-import { notFound } from "next/navigation";
-import ItemDisplay from "@/app/_ui/item/item-display";
-import ItemDelete from "@/app/_ui/item/item-delete";
-import ItemsList from "@/app/_ui/items/items-list";
 import PageTemplate from "@/app/_ui/general/page-template";
+import ItemDelete from "@/app/_ui/item/item-delete";
+import ItemDisplay from "@/app/_ui/item/item-display";
+import ItemsList from "@/app/_ui/items/items-list";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Item Info",

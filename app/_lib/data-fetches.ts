@@ -1,5 +1,6 @@
-import "server-only";
 import { sql } from "@vercel/postgres";
+import "server-only";
+import { z } from "zod";
 import {
   AutocompleteItem,
   DashboardStatistics,
@@ -8,7 +9,6 @@ import {
   ItemWithPath,
   SelectOptions,
 } from "./data-definitions";
-import { z } from "zod";
 import { getUser } from "./utils";
 
 export async function fetchItem(id: string) {

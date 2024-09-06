@@ -1,5 +1,5 @@
-import "server-only";
 import { sql } from "@vercel/postgres";
+import "server-only";
 
 export async function seedItems() {
   await sql`

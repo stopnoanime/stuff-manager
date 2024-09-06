@@ -3,9 +3,9 @@ import {
   fetchAllFavoriteItems,
   fetchDashboardStatistics,
 } from "../_lib/data-fetches";
-import ItemCard from "../_ui/item/item-card";
-import PageTemplate from "../_ui/general/page-template";
 import QuickStats from "../_ui/dashboard/quick-stats";
+import PageTemplate from "../_ui/general/page-template";
+import ItemCard from "../_ui/item/item-card";
 
 export const metadata: Metadata = {
   title: "Dashboard",

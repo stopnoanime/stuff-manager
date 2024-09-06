@@ -1,5 +1,5 @@
-import Menu from "../_ui/menu/menu";
 import SearchBar from "../_ui/dashboard/search-bar";
+import Menu from "../_ui/menu/menu";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
