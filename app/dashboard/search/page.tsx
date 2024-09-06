@@ -1,6 +1,6 @@
 import { fetchItemsByQRCode, fetchItemsByQuery } from "@/app/_lib/data-fetches";
 import PageTemplate from "@/app/_ui/general/page-template";
-import ItemsList from "@/app/_ui/item/items-list";
+import ItemsList from "@/app/_ui/items/items-list";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
