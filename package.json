@@ -42,6 +42,9 @@
     "react-select": {
       "react": "^19.0.0-rc-1d989965-20240821",
       "react-dom": "^19.0.0-rc-1d989965-20240821"
+    },
+    "@fortawesome/react-fontawesome": {
+      "react": "^19.0.0-rc-1d989965-20240821"
     }
   }
 }
