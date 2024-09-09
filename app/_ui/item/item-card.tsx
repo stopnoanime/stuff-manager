@@ -9,13 +9,14 @@ export default function ItemCard({ item }: { item: Item }) {
       <Link href={`/dashboard/items/${item.id}`} className="link text-lg">
         {item.name}
       </Link>
-      <Image
-        className="h-[140px] object-contain mt-2"
-        width={210}
-        height={140}
-        src={item.image_url || noImage}
-        alt="Item image"
-      />
+      <div className="relative aspect-video mt-1">
+        <Image
+          className="object-contain"
+          fill
+          src={item.image_url || noImage}
+          alt="Item image"
+        />
+      </div>
     </div>
   );
 }

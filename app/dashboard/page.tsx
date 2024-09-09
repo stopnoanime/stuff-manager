@@ -19,7 +19,7 @@ export default async function Page() {
 
   return (
     <PageTemplate title="Dashboard" fullWidth>
-      <div className="flex flex-wrap gap-6 text-lg font-light">
+      <div className="grid gap-2 md:gap-4 grid-cols-[repeat(auto-fill,minmax(10rem,1fr))]">
         <QuickStats stats={stats}></QuickStats>
 
         {items.map((item) => (
@@ -27,8 +27,8 @@ export default async function Page() {
         ))}
 
         {items.length == 0 && (
-          <div className="default-border aspect-square p-4 text-center">
-            Your favorite items <br></br> will display here.
+          <div className="default-border p-4 text-center">
+            Your favorite items will display here.
           </div>
         )}
       </div>
