@@ -1,5 +1,5 @@
 import { ALLOWED_IMAGE_TYPES } from "@/app/_lib/data-definitions";
-import noImage from "@/public/no-image.png";
+import noImage from "@/public/no-image.svg";
 import Image from "next/image";
 import { ChangeEvent, DragEvent, useRef, useState } from "react";
 

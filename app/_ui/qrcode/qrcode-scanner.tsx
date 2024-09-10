@@ -1,6 +1,6 @@
 "use client";
 
-import noCamera from "@/public/no-camera.png";
+import noCamera from "@/public/no-image.svg";
 import { BrowserMultiFormatReader, IScannerControls } from "@zxing/browser";
 import { useEffect, useRef, useState } from "react";
 

@@ -1,5 +1,5 @@
 import { Item } from "@/app/_lib/data-definitions";
-import noImage from "@/public/no-image.png";
+import noImage from "@/public/no-image.svg";
 import Image from "next/image";
 import Link from "next/link";
 
