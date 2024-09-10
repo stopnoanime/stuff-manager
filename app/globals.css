@@ -23,20 +23,20 @@ body {
   @apply py-2 px-4 h-20;
 }
 
-.textarea {
-  @apply resize-none w-full h-full p-4 bg-stone-50;
-}
-
-.textarea,
-.styled-input,
 .default-border {
   @apply border border-solid border-stone-900;
 }
 
-.textarea,
-.styled-input,
 .focus-outline {
   @apply outline-slate-900 focus:outline outline-2;
+}
+
+.textarea {
+  @apply resize-none w-full h-full p-4 bg-stone-50 default-border focus-outline;
+}
+
+.styled-input {
+  @apply px-[10px] py-[6px] w-full bg-stone-50 default-border focus-outline;
 }
 
 .textarea::placeholder,
@@ -44,6 +44,6 @@ body {
   @apply text-stone-400 opacity-100;
 }
 
-.styled-input {
-  @apply px-[10px] py-[6px] w-full bg-stone-50;
+.black-button {
+  @apply px-6 py-2 bg-stone-900 text-stone-50 focus-outline outline-offset-2;
 }

@@ -6,7 +6,7 @@ export default function ItemsTree({ items }: { items: ItemWithPath[] }) {
     return <div className="font-light text-lg pt-4">No items</div>;
 
   return (
-    <ul className="list-disc ml-4">
+    <ul className="list-disc list-inside">
       {items.map((item) => (
         <li key={item.id} style={{ marginLeft: item.depth * 20 }}>
           <Link href={`/dashboard/items/${item.id}`} className="link text-lg">

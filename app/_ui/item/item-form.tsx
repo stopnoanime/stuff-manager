@@ -137,7 +137,7 @@ export default function ItemForm({
         {actionState?.message && <p>{actionState.message}</p>}
       </div>
 
-      <button className="md:col-span-2 px-6 py-2 bg-stone-900 text-stone-50 focus-outline outline-offset-2">
+      <button className="md:col-span-2 black-button">
         {defaultValue ? "Edit" : "Create"}
       </button>
     </form>
