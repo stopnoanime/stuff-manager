@@ -57,7 +57,9 @@ export default function ImageInput({
 
   return (
     <div
-      className="styled-input relative"
+      className={
+        "styled-input relative" + (isDrag ? " [&_*]:pointer-events-none" : "")
+      }
       onDrop={handleDrop}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
@@ -104,7 +106,7 @@ export default function ImageInput({
       </div>
 
       {isDrag && (
-        <div className="absolute top-0 right-0 bottom-0 left-0 opacity-80 bg-stone-200 grid place-items-center text-xl pointer-events-none">
+        <div className="absolute inset-0 opacity-80 bg-stone-200 grid place-items-center text-xl pointer-events-none">
           Drop your images here
         </div>
       )}
