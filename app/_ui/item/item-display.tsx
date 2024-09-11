@@ -8,7 +8,7 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
   const placeholderColor = (v: string | null) => (v ? "" : " text-stone-400");
 
   return (
-    <div className="grid md:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="styled-input">
         <div className="aspect-video relative">
           <Image
@@ -22,13 +22,15 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
         </div>
       </div>
 
-      <div className={"textarea" + placeholderColor(item.description)}>
+      <div
+        className={"textarea div-textarea" + placeholderColor(item.description)}
+      >
         {item.description || "Item Description"}
       </div>
 
       <div
         className={
-          "md:col-start-2 md:row-span-5 textarea" +
+          "md:col-start-2 md:row-span-5 textarea div-textarea" +
           placeholderColor(item.location_description)
         }
       >
@@ -37,7 +39,7 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
 
       <div className="md:row-start-2">
         Name
-        <div className="styled-input">{item.name}</div>
+        <div className="styled-input single-line-display">{item.name}</div>
       </div>
       <div>
         Favorite
@@ -48,14 +50,23 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
 
       <div>
         Category
-        <div className={"styled-input" + placeholderColor(item.category)}>
+        <div
+          className={
+            "styled-input single-line-display" + placeholderColor(item.category)
+          }
+        >
           {item.category || "None"}
         </div>
       </div>
 
       <div>
         Parent item
-        <div className={"styled-input" + placeholderColor(item.parent_item_id)}>
+        <div
+          className={
+            "styled-input single-line-display" +
+            placeholderColor(item.parent_item_id)
+          }
+        >
           {item.parent_item_id ? (
             <Link
               className="link"

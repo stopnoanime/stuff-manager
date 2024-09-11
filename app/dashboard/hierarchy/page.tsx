@@ -19,7 +19,7 @@ export default async function Page() {
 
   return (
     <PageTemplate title="">
-      <div className="grid gap-12 grid-cols-1 md:[grid-template-columns:2fr_1fr]">
+      <div className="grid gap-12 grid-cols-1 md:grid-cols-2 lg:[grid-template-columns:minmax(0,2fr)_minmax(0,1fr)]">
         <div>
           <h1 className="text-2xl font-light mb-6">Root items:</h1>
           <ItemsGrid items={rootItems}></ItemsGrid>

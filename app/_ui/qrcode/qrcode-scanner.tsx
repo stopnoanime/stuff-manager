@@ -51,7 +51,7 @@ export default function QRCodeScanner({
   return (
     <div className="flex flex-col items-center">
       <video
-        className="aspect-video mb-2 min-w-80 w-[30vw]"
+        className="aspect-video mb-2 min-w-[min(20rem,100%)] w-[30vw]"
         poster={noCamera.src}
         ref={videoRef}
       ></video>

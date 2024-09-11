@@ -16,7 +16,7 @@ export default function PageTemplate({
   return (
     <div>
       {title && (
-        <div className="flex justify-between text-2xl font-light mb-6 overflow-auto whitespace-nowrap gap-6">
+        <div className="flex justify-between text-xl md:text-2xl font-light mb-6 overflow-auto whitespace-nowrap gap-6">
           <h1>{title}</h1>
           {links && (
             <div className="flex gap-4 md:gap-12">

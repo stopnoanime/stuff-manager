@@ -9,7 +9,10 @@ export default function ItemCard({ item }: { item: Item }) {
       key={item.id}
       className="default-border p-2 text-center flex flex-col justify-evenly"
     >
-      <Link href={`/dashboard/items/${item.id}`} className="link text-lg">
+      <Link
+        href={`/dashboard/items/${item.id}`}
+        className="link text-lg single-line-display"
+      >
         {item.name}
       </Link>
       <div className="relative aspect-video mt-1">

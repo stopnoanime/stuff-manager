@@ -11,14 +11,14 @@ export default function ItemsList({ items }: { items: Item[] }) {
           <th>Name</th>
           <th>Image</th>
           <th>Category</th>
-          <th>Description</th>
+          <th className="hidden md:table-cell">Description</th>
           <th>Favorite</th>
         </tr>
       </thead>
       <tbody>
         {items.map((item) => (
           <tr key={item.id}>
-            <td>
+            <td className="single-line-display">
               <Link className="link" href={`/dashboard/items/${item.id}`}>
                 {item.name}
               </Link>
@@ -34,9 +34,13 @@ export default function ItemsList({ items }: { items: Item[] }) {
                 />
               </div>
             </td>
-            <td>{item.category || "-"}</td>
-            <td>{item.description || "-"}</td>
-            <td>{item.is_favorite ? "True" : "-"}</td>
+            <td className="single-line-display">{item.category || "-"}</td>
+            <td className="single-line-display hidden md:table-cell">
+              {item.description || "-"}
+            </td>
+            <td className="single-line-display">
+              {item.is_favorite ? "True" : "-"}
+            </td>
           </tr>
         ))}
         {!items.length && (
