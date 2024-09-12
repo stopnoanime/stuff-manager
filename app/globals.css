@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 body {
-  @apply text-stone-900 bg-stone-50;
+  @apply bg-stone-50 text-stone-900;
 }
 
 .link {
-  @apply underline text-sky-600 hover:text-sky-700;
+  @apply text-sky-600 underline hover:text-sky-700;
 }
 
 .items-table {
-  @apply table-fixed w-full min-w-[420px];
+  @apply w-full min-w-[420px] table-fixed;
 }
 
 .items-table th {
-  @apply font-light text-lg;
+  @apply text-lg font-light;
 }
 
 .items-table tbody tr {
@@ -24,7 +24,7 @@ body {
 
 .items-table td,
 .items-table th {
-  @apply px-1 py-1 md:py-2 md:px-4 h-20;
+  @apply h-20 px-1 py-1 md:px-4 md:py-2;
 }
 
 .default-border {
@@ -32,15 +32,15 @@ body {
 }
 
 .focus-outline {
-  @apply focus:outline-none focus:ring-2 ring-inset ring-stone-900 ring-offset-stone-50;
+  @apply ring-inset ring-stone-900 ring-offset-stone-50 focus:outline-none focus:ring-2;
 }
 
 .textarea {
-  @apply resize-none w-full h-full p-4 bg-stone-50 default-border focus-outline;
+  @apply default-border focus-outline h-full w-full resize-none bg-stone-50 p-4;
 }
 
 .styled-input {
-  @apply px-[10px] py-[6px] w-full bg-stone-50 default-border focus-outline;
+  @apply default-border focus-outline w-full bg-stone-50 px-[10px] py-[6px];
 }
 
 .textarea::placeholder,
@@ -49,13 +49,13 @@ body {
 }
 
 .black-button {
-  @apply px-6 py-2 bg-stone-900 text-stone-50 focus-outline ![--tw-ring-inset:_] ring-offset-2;
+  @apply focus-outline bg-stone-900 px-6 py-2 text-stone-50 ring-offset-2 ![--tw-ring-inset:_];
 }
 
 .single-line-display {
-  @apply text-ellipsis whitespace-nowrap overflow-hidden;
+  @apply overflow-hidden text-ellipsis whitespace-nowrap;
 }
 
 .div-textarea {
-  @apply overflow-auto !h-0 min-h-[58px] md:min-h-full;
+  @apply !h-0 min-h-[58px] overflow-auto md:min-h-full;
 }

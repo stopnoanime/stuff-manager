@@ -12,7 +12,7 @@ export default function QRCodeDisplay({ qr_code }: { qr_code: string }) {
   }, [qr_code]);
 
   return (
-    <div className="flex items-center justify-center gap-4 styled-input">
+    <div className="styled-input flex items-center justify-center gap-4">
       {qr_code && imgSrc && (
         <>
           <img src={imgSrc} height="64" width="64" alt="The qr code"></img>
@@ -21,7 +21,7 @@ export default function QRCodeDisplay({ qr_code }: { qr_code: string }) {
           </a>
         </>
       )}
-      {!qr_code && <div className="text-left w-full text-stone-400">None</div>}
+      {!qr_code && <div className="w-full text-left text-stone-400">None</div>}
     </div>
   );
 }

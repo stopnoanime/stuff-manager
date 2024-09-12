@@ -3,7 +3,7 @@ import { DashboardStatistics } from "@/app/_lib/data-definitions";
 export default function QuickStats({ stats }: { stats: DashboardStatistics }) {
   return (
     <div className="default-border p-4">
-      <h1 className="text-xl mb-2">Quick stats:</h1>
+      <h1 className="mb-2 text-xl">Quick stats:</h1>
       <table>
         <tbody>
           <tr>

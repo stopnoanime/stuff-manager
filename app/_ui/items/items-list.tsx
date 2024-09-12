@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function ItemsList({ items }: { items: Item[] }) {
   return (
     <div className="overflow-auto">
-      <table className="w-full items-table text-center">
+      <table className="items-table w-full text-center">
         <thead>
           <tr>
             <th>Name</th>
@@ -46,7 +46,7 @@ export default function ItemsList({ items }: { items: Item[] }) {
           ))}
           {!items.length && (
             <tr>
-              <td colSpan={5} className="font-light text-lg !pt-6">
+              <td colSpan={5} className="!pt-6 text-lg font-light">
                 No Items
               </td>
             </tr>

@@ -16,8 +16,8 @@ export default function PageTemplate({
   return (
     <div>
       {title && (
-        <div className="flex text-xl md:text-2xl font-light mb-6 overflow-auto whitespace-nowrap gap-4 p-1">
-          <h1 className="grow single-line-display min-w-20">{title}</h1>
+        <div className="mb-6 flex gap-4 overflow-auto whitespace-nowrap p-1 text-xl font-light md:text-2xl">
+          <h1 className="single-line-display min-w-20 grow">{title}</h1>
           {links && (
             <div className="flex gap-4 md:gap-12">
               {links.map((l) => (

@@ -7,15 +7,15 @@ export default function ItemCard({ item }: { item: Item }) {
   return (
     <div
       key={item.id}
-      className="default-border p-2 text-center flex flex-col justify-evenly"
+      className="default-border flex flex-col justify-evenly p-2 text-center"
     >
       <Link
         href={`/dashboard/items/${item.id}`}
-        className="link text-lg single-line-display"
+        className="link single-line-display text-lg"
       >
         {item.name}
       </Link>
-      <div className="relative aspect-video mt-1">
+      <div className="relative mt-1 aspect-video">
         <Image
           className="object-contain"
           fill

@@ -36,7 +36,7 @@ export function QRCodeInput({ default_qr_code }: { default_qr_code?: string }) {
       <fieldset>
         <legend>QR Code</legend>
 
-        <div className="styled-input flex justify-evenly !w-0 min-w-full overflow-auto gap-2">
+        <div className="styled-input flex !w-0 min-w-full justify-evenly gap-2 overflow-auto">
           <label className="flex items-center gap-1">
             <input
               type="radio"
@@ -57,7 +57,7 @@ export function QRCodeInput({ default_qr_code }: { default_qr_code?: string }) {
             />
             {default_qr_code ? "Keep previous" : "Generate new"}
           </label>
-          <label className="flex items-center gap-1 w-32 justify-center">
+          <label className="flex w-32 items-center justify-center gap-1">
             <input
               type="radio"
               name="qr-type"

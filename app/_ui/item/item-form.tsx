@@ -45,7 +45,7 @@ export default function ItemForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4 p-1">
+    <form onSubmit={handleSubmit} className="grid gap-4 p-1 md:grid-cols-2">
       <ImageInput
         defaultImage={defaultValue?.image_url}
         errors={actionState.errors?.image}
@@ -60,7 +60,7 @@ export default function ItemForm({
 
       <textarea
         name="location_description"
-        className="md:col-start-2 md:row-span-5 textarea"
+        className="textarea md:col-start-2 md:row-span-5"
         defaultValue={defaultValue?.location_description}
         placeholder="Item Location Description"
       />
@@ -75,7 +75,7 @@ export default function ItemForm({
           aria-describedby="name-errors"
           placeholder="Item Name"
         ></input>
-        <p id="name-errors" className="text-red-500 text-sm">
+        <p id="name-errors" className="text-sm text-red-500">
           {actionState?.errors?.name?.map((e) => <span key={e}>{e}</span>)}
         </p>
       </label>
@@ -133,11 +133,11 @@ export default function ItemForm({
 
       <QRCodeInput default_qr_code={defaultValue?.qr_code} />
 
-      <div className="md:col-span-2 text-sm text-red-500">
+      <div className="text-sm text-red-500 md:col-span-2">
         {actionState?.message && <p>{actionState.message}</p>}
       </div>
 
-      <button className="md:col-span-2 black-button">
+      <button className="black-button md:col-span-2">
         {defaultValue ? "Edit" : "Create"}
       </button>
     </form>

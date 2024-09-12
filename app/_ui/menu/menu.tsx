@@ -16,11 +16,9 @@ const links = [
 
 export default function Menu() {
   return (
-    <div className="flex border-stone-900 border-solid w-full border-b overflow-x-auto md:flex-col md:border-b-0 md:border-r md:h-full md:w-40">
+    <div className="flex w-full overflow-x-auto border-b border-solid border-stone-900 md:h-full md:w-40 md:flex-col md:border-b-0 md:border-r">
       <Link
-        className="
-          bg-stone-900 text-stone-50 text-2xl font-light p-4 flex items-center 
-          focus-outline !ring-stone-50 !ring-offset-stone-900 ring-offset-2"
+        className="focus-outline flex items-center bg-stone-900 p-4 text-2xl font-light text-stone-50 !ring-stone-50 ring-offset-2 !ring-offset-stone-900"
         href="/"
       >
         Stuff
@@ -35,7 +33,7 @@ export default function Menu() {
         ></MenuButton>
       ))}
 
-      <div className="grow min-w-2 min-h-2"></div>
+      <div className="min-h-2 min-w-2 grow"></div>
       <MenuButton
         text="Sign out"
         icon={faPowerOff}

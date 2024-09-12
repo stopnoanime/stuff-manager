@@ -8,11 +8,11 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
   const placeholderColor = (v: string | null) => (v ? "" : " text-stone-400");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       <div className="styled-input">
-        <div className="aspect-video relative">
+        <div className="relative aspect-video">
           <Image
-            className="object-contain "
+            className="object-contain"
             src={item.image_url || noImage}
             fill
             priority
@@ -30,7 +30,7 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
 
       <div
         className={
-          "md:col-start-2 md:row-span-5 textarea div-textarea" +
+          "textarea div-textarea md:col-start-2 md:row-span-5" +
           placeholderColor(item.location_description)
         }
       >

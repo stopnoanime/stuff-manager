@@ -19,7 +19,7 @@ export default async function Page() {
 
   return (
     <PageTemplate title="Dashboard" fullWidth>
-      <div className="grid gap-2 md:gap-4 grid-cols-[repeat(auto-fill,minmax(10rem,1fr))]">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-2 md:gap-4">
         <QuickStats stats={stats}></QuickStats>
 
         {items.map((item) => (

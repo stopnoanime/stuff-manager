@@ -34,16 +34,16 @@ export default function MenuButton({
   return (
     <LinkOrButton
       className={
-        "font-light p-2 border-r border-stone-900 md:p-4 md:border-r-0 md:border-b focus-outline" +
+        "focus-outline border-r border-stone-900 p-2 font-light md:border-b md:border-r-0 md:p-4" +
         (isSelected ? " font-medium md:font-normal" : "") +
-        (isLast ? " border-l border-r-0 md:border-t border-b-0" : "")
+        (isLast ? " border-b-0 border-l border-r-0 md:border-t" : "")
       }
       href={"/dashboard/" + segment}
       onClick={onClick}
     >
-      <div className="flex flex-col justify-center gap-2 h-full text-center md:items-start">
+      <div className="flex h-full flex-col justify-center gap-2 text-center md:items-start">
         <FontAwesomeIcon icon={icon} className="md:!hidden" size="lg" />
-        <div className="text-xs md:text-lg ">{text}</div>
+        <div className="text-xs md:text-lg">{text}</div>
       </div>
     </LinkOrButton>
   );

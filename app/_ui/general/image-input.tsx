@@ -71,7 +71,7 @@ export default function ImageInput({
         readOnly
         name="delete_image"
       ></input>
-      <div className="aspect-video relative pointer-events-none">
+      <div className="pointer-events-none relative aspect-video">
         <Image
           className="object-contain"
           src={imageSrc}
@@ -81,8 +81,8 @@ export default function ImageInput({
           alt="Item image"
         />
       </div>
-      <div className="flex mt-2">
-        <label className="styled-input cursor-pointer grow !w-auto">
+      <div className="mt-2 flex">
+        <label className="styled-input !w-auto grow cursor-pointer">
           {fileName || "Select Image"}
           <input
             type="file"
@@ -106,12 +106,12 @@ export default function ImageInput({
       </div>
 
       {isDrag && (
-        <div className="absolute inset-0 opacity-80 bg-stone-200 grid place-items-center text-xl pointer-events-none">
+        <div className="pointer-events-none absolute inset-0 grid place-items-center bg-stone-200 text-xl opacity-80">
           Drop your images here
         </div>
       )}
 
-      <div id="image-errors" className="text-red-500 text-sm">
+      <div id="image-errors" className="text-sm text-red-500">
         {errors?.map((e) => <p key={e}>{e}</p>)}
       </div>
     </div>

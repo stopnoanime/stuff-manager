@@ -19,13 +19,13 @@ export default async function Page() {
 
   return (
     <PageTemplate title="">
-      <div className="grid gap-12 grid-cols-1 md:grid-cols-2 lg:[grid-template-columns:minmax(0,2fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:[grid-template-columns:minmax(0,2fr)_minmax(0,1fr)]">
         <div>
-          <h1 className="text-2xl font-light mb-6">Root items:</h1>
+          <h1 className="mb-6 text-2xl font-light">Root items:</h1>
           <ItemsGrid items={rootItems}></ItemsGrid>
         </div>
         <div>
-          <h1 className="text-2xl font-light mb-6">Item hierarchy:</h1>
+          <h1 className="mb-6 text-2xl font-light">Item hierarchy:</h1>
           <ItemsTree items={itemsTree}></ItemsTree>
         </div>
       </div>

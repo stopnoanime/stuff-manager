@@ -58,7 +58,7 @@ function SearchBarNoSuspense() {
   return (
     <>
       <form
-        className="flex border-stone-900 border-solid border-b h-16 justify-center p-2"
+        className="flex h-16 justify-center border-b border-solid border-stone-900 p-2"
         onSubmit={handleSearch}
         onFocus={() => setAutocompleteOpen(true)}
       >
@@ -71,10 +71,10 @@ function SearchBarNoSuspense() {
             defaultValue={searchParams.get("query")?.toString()}
           ></input>
           {autocompleteOpen && !!autocomplete.length && (
-            <ul className="absolute top-full left-0 right-0 border-stone-900 border-solid border-l border-r  bg-stone-50">
+            <ul className="absolute left-0 right-0 top-full border-l border-r border-solid border-stone-900 bg-stone-50">
               {autocomplete.map((i) => (
                 <li
-                  className="border-stone-900 border-solid border-b p-2"
+                  className="border-b border-solid border-stone-900 p-2"
                   key={i.id}
                 >
                   <Link
@@ -93,7 +93,7 @@ function SearchBarNoSuspense() {
         <button type="submit" className="styled-input !w-auto !border-l-0">
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
-            className="md:!hidden mx-2"
+            className="mx-2 md:!hidden"
           />
           <div className="hidden md:block"> Search</div>
         </button>
