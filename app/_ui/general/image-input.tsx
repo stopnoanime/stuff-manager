@@ -76,8 +76,8 @@ export default function ImageInput({
           className="object-contain"
           src={imageSrc}
           fill
+          sizes="(max-width: 768px) 100vw, 33vw"
           priority
-          sizes="60vw"
           alt="Item image"
         />
       </div>

@@ -16,7 +16,7 @@ export default function ItemDisplay({ item }: { item: ItemWithParent }) {
             src={item.image_url || noImage}
             fill
             priority
-            sizes="60vw"
+            sizes="(max-width: 768px) 100vw, 33vw"
             alt="Item image"
           />
         </div>

@@ -30,7 +30,7 @@ export default function ItemsList({ items }: { items: Item[] }) {
                     className="object-contain"
                     src={item.image_url || noImage}
                     fill
-                    sizes="10vw"
+                    sizes="(max-width: 768px) 25vw, 10vw"
                     alt="Item image"
                   />
                 </div>

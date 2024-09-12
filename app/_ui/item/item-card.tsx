@@ -19,6 +19,7 @@ export default function ItemCard({ item }: { item: Item }) {
         <Image
           className="object-contain"
           fill
+          sizes="(max-width: 360px) 100vw, 50vw"
           src={item.image_url || noImage}
           alt="Item image"
         />
