@@ -34,7 +34,7 @@ export default function MenuButton({
   return (
     <LinkOrButton
       className={
-        "font-light p-2 border-r border-stone-900 md:p-4 md:border-r-0 md:border-b" +
+        "font-light p-2 border-r border-stone-900 md:p-4 md:border-r-0 md:border-b focus-outline" +
         (isSelected ? " font-medium md:font-normal" : "") +
         (isLast ? " border-l border-r-0 md:border-t border-b-0" : "")
       }

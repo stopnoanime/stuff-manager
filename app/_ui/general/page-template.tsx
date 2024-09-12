@@ -16,8 +16,8 @@ export default function PageTemplate({
   return (
     <div>
       {title && (
-        <div className="flex justify-between text-xl md:text-2xl font-light mb-6 overflow-auto whitespace-nowrap gap-6">
-          <h1>{title}</h1>
+        <div className="flex text-xl md:text-2xl font-light mb-6 overflow-auto whitespace-nowrap gap-4 p-1">
+          <h1 className="grow single-line-display min-w-20">{title}</h1>
           {links && (
             <div className="flex gap-4 md:gap-12">
               {links.map((l) => (
@@ -31,11 +31,7 @@ export default function PageTemplate({
         </div>
       )}
 
-      <div
-        className={
-          "mx-auto overflow-x-auto" + (!fullWidth && " md:max-w-[70vw]")
-        }
-      >
+      <div className={"mx-auto" + (!fullWidth && " md:max-w-[70vw]")}>
         {children}
       </div>
     </div>

@@ -32,7 +32,7 @@ body {
 }
 
 .focus-outline {
-  @apply outline-slate-900 focus:outline outline-2;
+  @apply focus:outline-none focus:ring-2 ring-inset ring-stone-900 ring-offset-stone-50;
 }
 
 .textarea {
@@ -49,7 +49,7 @@ body {
 }
 
 .black-button {
-  @apply px-6 py-2 bg-stone-900 text-stone-50 focus-outline outline-offset-2;
+  @apply px-6 py-2 bg-stone-900 text-stone-50 focus-outline ![--tw-ring-inset:_] ring-offset-2;
 }
 
 .single-line-display {

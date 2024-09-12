@@ -45,7 +45,7 @@ export default function ItemForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4 ">
+    <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4 p-1">
       <ImageInput
         defaultImage={defaultValue?.image_url}
         errors={actionState.errors?.image}
@@ -150,14 +150,14 @@ const selectStyles: StylesConfig = {
     transition: "none",
     border: "1px solid #0f172a !important",
     borderRadius: 0,
-    outline: "2px #0f172a " + (state.isFocused ? "solid" : ""),
-    boxShadow: "none",
+    outline: "none",
+    boxShadow: state.isFocused ? "#0f172a 0px 0px 0px 2px inset" : "",
     backgroundColor: "#fafaf9",
   }),
   menu: (base, state) => ({
     ...base,
-    outline: "2px #0f172a solid",
-    border: "1px solid #0f172a !important",
+    outline: "none",
+    border: "3px solid #0f172a !important",
     borderRadius: 0,
     boxShadow: "none",
     backgroundColor: "#fafaf9",

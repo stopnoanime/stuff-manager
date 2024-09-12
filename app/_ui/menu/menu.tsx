@@ -18,7 +18,9 @@ export default function Menu() {
   return (
     <div className="flex border-stone-900 border-solid w-full border-b overflow-x-auto md:flex-col md:border-b-0 md:border-r md:h-full md:w-40">
       <Link
-        className="bg-stone-900 text-stone-50 text-2xl font-light p-4 flex items-center"
+        className="
+          bg-stone-900 text-stone-50 text-2xl font-light p-4 flex items-center 
+          focus-outline !ring-stone-50 !ring-offset-stone-900 ring-offset-2"
         href="/"
       >
         Stuff
