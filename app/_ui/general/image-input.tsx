@@ -1,7 +1,12 @@
-import { ALLOWED_IMAGE_TYPES } from "@/app/_lib/data-definitions";
+import {
+  ALLOWED_IMAGE_TYPES,
+  MAX_IMAGE_SIZE_MB,
+} from "@/app/_lib/data-definitions";
 import noImage from "@/public/no-image.svg";
+import imageCompression from "browser-image-compression";
 import Image from "next/image";
-import { ChangeEvent, DragEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
+import DropZone from "./drop-zone";
 
 export default function ImageInput({
   defaultImage,
@@ -10,77 +15,66 @@ export default function ImageInput({
   defaultImage?: string;
   errors?: string[];
 }) {
-  const [imageSrc, setImageSrc] = useState(defaultImage || noImage);
-  const [deleteImage, setDeleteImage] = useState("");
+  const [displayImageSrc, setDisplayImageSrc] = useState(
+    defaultImage || noImage,
+  );
+  const [shouldDeleteImage, setShouldDeleteImage] = useState("");
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState("");
-  const [isDrag, setIsDrag] = useState(false);
 
-  function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleFileInputChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (file) {
-      setImageSrc(URL.createObjectURL(file));
-      setFileName(file.name);
-    }
+
+    if (file) handleImageFileChange(file);
+  }
+
+  async function handleImageFileChange(imageFile: File) {
+    if (!ALLOWED_IMAGE_TYPES.includes(imageFile.type)) return;
+
+    const compressedFile = await imageCompression(imageFile, {
+      maxSizeMB: MAX_IMAGE_SIZE_MB,
+      maxWidthOrHeight: 1920,
+    });
+
+    setDisplayImageSrc(URL.createObjectURL(compressedFile));
+    setFileName(imageFile.name);
+
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(
+      new File([compressedFile], imageFile.name, { type: imageFile.type }),
+    );
+    fileInputRef.current!.files = dataTransfer.files;
   }
 
   function handleImageDelete() {
-    setImageSrc(noImage);
-    setDeleteImage("true");
+    setDisplayImageSrc(noImage);
+    setShouldDeleteImage("true");
     setFileName("");
     fileInputRef.current!.value = "";
   }
 
-  function handleDragOver(event: DragEvent) {
-    event.preventDefault();
-    setIsDrag(true);
-  }
-
-  function handleDrop(event: DragEvent) {
-    event.preventDefault();
-    setIsDrag(false);
-
-    if (event.dataTransfer.files.length !== 1) return;
-
-    const file = event.dataTransfer.files[0];
-
-    if (file && ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      setImageSrc(URL.createObjectURL(file));
-      setFileName(file.name);
-      fileInputRef.current!.files = event.dataTransfer.files;
-    }
-  }
-
-  function handleDragLeave() {
-    setIsDrag(false);
-  }
-
   return (
-    <div
-      className={
-        "styled-input relative" + (isDrag ? " [&_*]:pointer-events-none" : "")
-      }
-      onDrop={handleDrop}
-      onDragLeave={handleDragLeave}
-      onDragOver={handleDragOver}
-    >
+    <DropZone onDrop={handleImageFileChange}>
       <input
         hidden
         type="text"
-        value={deleteImage}
+        value={shouldDeleteImage}
         readOnly
         name="delete_image"
       ></input>
-      <div className="pointer-events-none relative aspect-video">
+
+      <div className="relative aspect-video">
         <Image
           className="object-contain"
-          src={imageSrc}
+          src={displayImageSrc}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
           priority
           alt="Item image"
         />
       </div>
+
       <div className="mt-2 flex">
         <label className="styled-input !w-auto grow cursor-pointer">
           {fileName || "Select Image"}
@@ -90,11 +84,12 @@ export default function ImageInput({
             name="image"
             aria-describedby="image-errors"
             accept=".jpg,.jpeg,.png,.webp"
-            onChange={handleImageChange}
+            onChange={handleFileInputChange}
             hidden
           ></input>
         </label>
-        {imageSrc !== noImage && (
+
+        {displayImageSrc !== noImage && (
           <button
             type="button"
             onClick={handleImageDelete}
@@ -105,15 +100,9 @@ export default function ImageInput({
         )}
       </div>
 
-      {isDrag && (
-        <div className="pointer-events-none absolute inset-0 grid place-items-center bg-stone-200 text-xl opacity-80">
-          Drop your images here
-        </div>
-      )}
-
       <div id="image-errors" className="text-sm text-red-500">
         {errors?.map((e) => <p key={e}>{e}</p>)}
       </div>
-    </div>
+    </DropZone>
   );
 }

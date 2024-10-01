@@ -46,9 +46,14 @@ export const ALLOWED_IMAGE_TYPES = [
   "image/webp",
 ];
 
+export const MAX_IMAGE_SIZE_MB = 2;
+
 export const ImageSchema = z
   .instanceof(File)
-  .refine((f) => f.size <= 1024 * 1024 * 5, `Max image size is 5 MB.`)
+  .refine(
+    (f) => f.size <= 1024 * 1024 * MAX_IMAGE_SIZE_MB,
+    `Max image size is ${MAX_IMAGE_SIZE_MB} MB.`,
+  )
   .refine(
     (f) => f.size === 0 || ALLOWED_IMAGE_TYPES.includes(f.type),
     "Only .webp, .jpeg, and .png formats are supported.",
