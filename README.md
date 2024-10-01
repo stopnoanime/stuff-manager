@@ -1,4 +1,5 @@
 # Stuff Manager
+![screenshot](https://github.com/user-attachments/assets/32c726d7-77c7-4ef4-9389-1843f9d31fda)
 
 Stuff Manager is a Next.js app that allows you to manage your personal belongings.
 You can create entires for items with descriptions, images, categories and hierarchy relations.
