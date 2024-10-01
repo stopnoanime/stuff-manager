@@ -12,9 +12,9 @@ export default function Page() {
       <GoToDashboardButton></GoToDashboardButton>
 
       <div>
-        <h2 className="mb-2 text-xl">Core features:</h2>
+        <h2 className="mb-2 text-xl">Main features:</h2>
         <ul className="list-inside list-disc">
-          <li>Item manager with relation support</li>
+          <li>Item manager with hierarchy support</li>
           <li>User auth using GitHub OAuth</li>
           <li>QR code based item retrieval</li>
           <li>Full text item search</li>
